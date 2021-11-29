@@ -14,12 +14,12 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 	<div class="flex-row flex-justify-between">
 <?php
 	echo sprintf( '<a%s>%s</a>', balitsa_attrs( [
-		'href' => admin_url( 'admin-ajax.php?' . http_build_query( [
+		'href' => add_query_arg( [
 			'action' => 'balitsa_metabox_refresh',
 			'post' => $post->ID,
 			'nonce' => balitsa_nonce_create( 'balitsa_metabox_refresh', $post->ID ),
-		] ) ),
-		'class' => 'balitsa-link button button-secondary leaf',
+		], admin_url( 'admin-ajax.php' ) ),
+		'class' => 'balitsa-link button leaf',
 	] ), esc_html__( 'Refresh', 'balitsa' ) ) . "\n";
 ?>
 		<span class="balitsa-spinner spinner leaf" data-balitsa-spinner-toggle="is-active"></span>
@@ -28,11 +28,11 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 <?php
 	if ( is_null( $struct ) ) {
 		echo sprintf( '<div class="flex-row"><a%s>%s</a></div>', balitsa_attrs( [
-			'href' => admin_url( 'admin-ajax.php?' . http_build_query( [
+			'href' => add_query_arg( [
 				'action' => 'balitsa_metabox_construct',
 				'post' => $post->ID,
 				'nonce' => balitsa_nonce_create( 'balitsa_metabox_construct', $post->ID ),
-			] ) ),
+			], admin_url( 'admin-ajax.php' ) ),
 			'class' => 'balitsa-link button leaf',
 		] ), esc_html__( 'Construct', 'balitsa' ) ) . "\n";
 	} else {
@@ -58,7 +58,22 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 		</span>
 	</div>
 	<hr class="leaf" />
-	<h3 class="leaf"><?= esc_html__( 'Invite Users', 'balitsa' ) ?></h3>
+<?php
+		// user list
+		$attrs = balitsa_attrs( [
+			'href' => add_query_arg( [
+				'action' => 'balitsa_metabox_user_accept',
+				'post' => $post->ID,
+				'nonce' => balitsa_nonce_create( 'balitsa_metabox_user_accept', $post->ID ),
+			], admin_url( 'admin-ajax.php' ) ),
+			'class' => 'balitsa-insert button leaf',
+			'data-balitsa-form' => '.balitsa-form-access',
+		] );
+?>
+	<div class="flex-row flex-justify-between flex-align-center">
+		<h3 class="leaf"><?= esc_html__( 'Invite Users', 'balitsa' ) ?></h3>
+		<a <?= $attrs ?>><?= esc_html__( 'Accept', 'balitsa' ) ?></a>
+	</div>
 	<div class="leaf">
 		<table class="fixed widefat striped">
 			<thead>
@@ -74,31 +89,20 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 			'order' => 'ASC',
 		] );
 		foreach ( $users as $user ) {
-			if ( in_array( $user->ID, $access, TRUE ) ) {
-				$icon = 'dashicons dashicons-yes';
-				$href = admin_url( 'admin-ajax.php?' . http_build_query( [
+			if ( !in_array( $user->ID, $access, TRUE ) )
+				continue;
+			$action = sprintf( '<a%s>%s</a>', balitsa_attrs( [
+				'href' => add_query_arg( [
 					'action' => 'balitsa_metabox_user_reject',
 					'post' => $post->ID,
 					'user' => $user->ID,
 					'nonce' => balitsa_nonce_create( 'balitsa_metabox_user_reject', $post->ID, $user->ID ),	
-				] ) );
-				$action = sprintf( '<a href="%s" class="balitsa-link">%s</a>', $href, esc_html__( 'Reject', 'balitsa' ) );
-			} else {
-				$icon = 'dashicons dashicons-no';
-				$href = admin_url( 'admin-ajax.php?' . http_build_query( [
-					'action' => 'balitsa_metabox_user_accept',
-					'post' => $post->ID,
-					'user' => $user->ID,
-					'nonce' => balitsa_nonce_create( 'balitsa_metabox_user_accept', $post->ID, $user->ID ),
-				] ) );
-				$action = sprintf( '<a href="%s" class="balitsa-link">%s</a>', $href, esc_html__( 'Accept', 'balitsa' ) );
-			}
+				], admin_url( 'admin-ajax.php' ) ),
+				'class' => 'balitsa-link',
+			] ), esc_html__( 'Reject', 'balitsa' ) );
 ?>
 				<tr>
-					<td class="column-primary">
-						<span class="<?= esc_attr( $icon ) ?>"></span>
-						<span><?= esc_html( $user->display_name ) ?></span>
-					</td>
+					<td class="column-primary"><?= esc_html( $user->display_name ) ?></td>
 					<td><?= $action ?></td>
 				</tr>
 <?php
@@ -107,16 +111,37 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 			</tbody>
 		</table>
 	</div>
+	<div class="balitsa-form balitsa-form-access flex-col" style="display: none;">
+		<label class="flex-row flex-justify-between flex-align-center">
+			<span class="leaf"><?= esc_html__( 'User', 'balitsa' ) ?></span>
+			<select class="balitsa-field leaf" data-balitsa-name="user">
+				<option value=""></option>
+<?php
+		foreach ( $users as $user ) {
+			if ( in_array( $user->ID, $access, TRUE ) )
+				continue;
+?>
+				<option value="<?= esc_attr( $user->ID ) ?>"><?= esc_html( $user->display_name ) ?></option>
+<?php
+		}
+?>
+			</select>
+		</label>
+		<div class="flex-row flex-justify-between flex-align-center">
+			<a href="" class="balitsa-link balitsa-submit button button-primary leaf"><?= esc_html__( 'Submit', 'balitsa' ) ?></a>
+			<a href="" class="balitsa-cancel button leaf"><?= esc_html__( 'Cancel', 'balitsa' ) ?></a>
+		</div>
+	</div>
 	<hr class="leaf" />
 <?php
 		// meeting list
 		$attrs = balitsa_attrs( [
-			'href' => admin_url( 'admin-ajax.php?' . http_build_query( [
+			'href' => add_query_arg( [
 				'action' => 'balitsa_metabox_meeting_insert',
 				'post' => $post->ID,
 				'nonce' => balitsa_nonce_create( 'balitsa_metabox_meeting_insert', $post->ID ),
-			] ) ),
-			'class' => 'balitsa-insert button button-secondary leaf',
+			], admin_url( 'admin-ajax.php' ) ),
+			'class' => 'balitsa-insert button leaf',
 			'data-balitsa-form' => '.balitsa-form-meeting',
 		] );
 ?>
@@ -144,11 +169,11 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 				$sport = $sports[$meeting['sport']];
 			$actions = [];
 			$actions['clone'] = sprintf( '<a%s>%s</a>', balitsa_attrs( [
-				'href' => admin_url( 'admin-ajax.php?' . http_build_query( [
+				'href' => add_query_arg( [
 					'action' => 'balitsa_metabox_meeting_insert',
 					'post' => $post->ID,
 					'nonce' => balitsa_nonce_create( 'balitsa_metabox_meeting_insert', $post->ID ),
-				] ) ),
+				], admin_url( 'admin-ajax.php' ) ),
 				'class' => 'balitsa-insert',
 				'data-balitsa-form' => '.balitsa-form-meeting',
 				'data-balitsa-field-datetime' => $dt->format( 'Y-m-d\TH:i' ),
@@ -156,12 +181,12 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 				'data-balitsa-field-teams' => $meeting['teams'],
 			] ), esc_html__( 'Clone', 'balitsa' ) );
 			$actions['update'] = sprintf( '<a%s>%s</a>', balitsa_attrs( [
-				'href' => admin_url( 'admin-ajax.php?' . http_build_query( [
+				'href' => add_query_arg( [
 					'action' => 'balitsa_metabox_meeting_update',
 					'post' => $post->ID,
 					'meeting' => $meeting_key,
 					'nonce' => balitsa_nonce_create( 'balitsa_metabox_meeting_update', $post->ID, $meeting_key ),
-				] ) ),
+				], admin_url( 'admin-ajax.php' ) ),
 				'class' => 'balitsa-insert',
 				'data-balitsa-form' => '.balitsa-form-meeting',
 				'data-balitsa-field-datetime' => $dt->format( 'Y-m-d\TH:i' ),
@@ -169,12 +194,12 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 				'data-balitsa-field-teams' => $meeting['teams'],
 			] ), esc_html__( 'Update', 'balitsa' ) );
 			$actions['delete'] = sprintf( '<span class="delete"><a%s>%s</a></span>', balitsa_attrs( [
-				'href' => admin_url( 'admin-ajax.php?' . http_build_query( [
+				'href' => add_query_arg( [
 					'action' => 'balitsa_metabox_meeting_delete',
 					'post' => $post->ID,
 					'meeting' => $meeting_key,
 					'nonce' => balitsa_nonce_create( 'balitsa_metabox_meeting_delete', $post->ID, $meeting_key ),
-				] ) ),
+				], admin_url( 'admin-ajax.php' ) ),
 				'class' => 'balitsa-link',
 				'data-balitsa-confirm' => esc_attr__( 'Delete?', 'balitsa' ),
 			] ), esc_html__( 'Delete', 'balitsa' ) );
@@ -220,7 +245,7 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 		</label>
 		<div class="flex-row flex-justify-between flex-align-center">
 			<a href="" class="balitsa-link balitsa-submit button button-primary leaf"><?= esc_html__( 'Submit', 'balitsa' ) ?></a>
-			<a href="" class="balitsa-cancel button button-secondary leaf"><?= esc_html__( 'Cancel', 'balitsa' ) ?></a>
+			<a href="" class="balitsa-cancel button leaf"><?= esc_html__( 'Cancel', 'balitsa' ) ?></a>
 		</div>
 	</div>
 	<hr class="leaf" />
@@ -231,11 +256,11 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 	<div class="flex-row">
 <?php
 		echo sprintf( '<a%s>%s</a>', balitsa_attrs( [
-			'href' => admin_url( 'admin-ajax.php?' . http_build_query( [
+			'href' => add_query_arg( [
 				'action' => 'balitsa_metabox_destruct',
 				'post' => $post->ID,
 				'nonce' => balitsa_nonce_create( 'balitsa_metabox_destruct', $post->ID ),
-			] ) ),
+			], admin_url( 'admin-ajax.php' ) ),
 			'class' => 'balitsa-link button leaf',
 			'data-balitsa-confirm' => esc_attr__( 'Destruct?', 'balitsa' ),
 		] ), esc_html__( 'Destruct', 'balitsa' ) ) . "\n";
@@ -300,12 +325,12 @@ add_action( 'wp_ajax_' . 'balitsa_metabox_user_accept', function(): void {
 	$post = balitsa_get_post();
 	if ( !current_user_can( 'edit_post', $post->ID ) )
 		exit( 'role' );
+	balitsa_nonce_verify( 'balitsa_metabox_user_accept', $post->ID );
 	$access = balitsa_get_access( $post );
-	$user = balitsa_get_user();
+	$user = balitsa_post_user();
 	$key = array_search( $user->ID, $access, TRUE );
 	if ( $key !== FALSE )
 		exit( 'user' );
-	balitsa_nonce_verify( 'balitsa_metabox_user_accept', $post->ID, $user->ID );
 	$access[] = $user->ID;
 	balitsa_set_access( $post, $access );
 	balitsa_success( balitsa_metabox( $post ) );
