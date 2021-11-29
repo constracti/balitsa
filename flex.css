@@ -10,8 +10,14 @@
 .flex-wrap {
 	flex-wrap: wrap;
 }
+.flex-justify-start {
+	justify-content: start;
+}
 .flex-justify-between {
 	justify-content: space-between;
+}
+.flex-justify-end {
+	justify-content: end;
 }
 .flex-align-center {
 	align-items: center;

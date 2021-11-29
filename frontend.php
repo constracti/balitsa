@@ -155,7 +155,8 @@ function balitsa_player_insert_link( WP_Post $post, string $meeting_key ): strin
 }
 
 function balitsa_player_tag( WP_Post $post, array $struct, array $meeting, array $player ): string {
-	$html = '<div class="flex-row flex-justify-between flex-align-center root4 leaf" style="border: thin solid;">' . "\n";
+	$html = '<div class="flex-row flex-wrap flex-justify-between root4 leaf" style="border: thin solid;">' . "\n";
+	$html .= '<div class="flex-row flex-grow flex-justify-start">' . "\n";
 	$html .= '<div class="leaf">' . "\n";
 	if ( is_null( $struct['meeting_key'] ) ) {
 		if ( $player['availability'] )
@@ -169,14 +170,18 @@ function balitsa_player_tag( WP_Post $post, array $struct, array $meeting, array
 	$name = !is_null( $user ) ? $user->display_name : $player['name'];
 	$html .= sprintf( '<span>%s</span>', esc_html( $name ) ) . "\n";
 	$html .= '</div>' . "\n";
-	$html .= '<div class="flex-row">' . "\n";
+	$html .= '</div>' . "\n";
+	$html .= '<div class="flex-row flex-grow flex-justify-end">' . "\n";
 	if ( !is_null( $struct['meeting_key'] ) ) {
 		$sports = balitsa_get_sports();
 		$sport = array_key_exists( 'sport', $meeting ) && array_key_exists( $meeting['sport'], $sports ) ? $sports[$meeting['sport']] : NULL;
 		if ( !is_null( $sport ) && array_key_exists( 'stats', $sport ) && is_array( $sport['stats'] ) ) {
 			foreach ( $sport['stats'] as $stat_key => $stat ) {
 				$value = array_key_exists( 'stats', $player ) && is_array( $player['stats'] ) && array_key_exists( $stat_key, $player['stats'] ) && !is_null( $player['stats'][$stat_key] ) ? $player['stats'][$stat_key] : 0;
-				$html .= str_repeat( sprintf( '<div class="leaf"><span class="%s"></span></div>', esc_attr( $stat['icon'] ) ) . "\n", $value );
+				if ( $value < 3 )
+					$html .= str_repeat( sprintf( '<div class="leaf"><span class="%s"></span></div>', esc_attr( $stat['icon'] ) ) . "\n", $value );
+				else
+					$html .= sprintf( '<div class="leaf"><span class="%s"></span>&times;%d</div>', esc_attr( $stat['icon'] ), $value ) . "\n";
 			}
 		}
 		$value = 0;
@@ -184,7 +189,10 @@ function balitsa_player_tag( WP_Post $post, array $struct, array $meeting, array
 			if ( array_key_exists( 'mvp', $p ) && $p['mvp'] === $player['player_key'] )
 				$value++;
 		}
-		$html .= str_repeat( sprintf( '<div class="leaf"><span class="%s"></span></div>', esc_attr( 'fas fa-fw fa-trophy' ) ) . "\n", $value );
+		if ( $value < 3 )
+			$html .= str_repeat( sprintf( '<div class="leaf"><span class="%s"></span></div>', esc_attr( 'fas fa-fw fa-trophy' ) ) . "\n", $value );
+		else
+			$html .= sprintf( '<div class="leaf"><span class="%s"></span>&times;%d</div>', esc_attr( 'fas fa-fw fa-trophy' ), $value ) . "\n";
 	}
 	if ( balitsa_has_edit_access( $post ) && !$struct['readonly'] ) {
 		// update
@@ -285,8 +293,8 @@ function balitsa_header_tag( array $meeting ): string {
 	$sport = NULL;
 	if ( array_key_exists( 'sport', $meeting ) && array_key_exists( $meeting['sport'], $sports ) )
 		$sport = $sports[$meeting['sport']];
-	$html = '<div class="flex-row flex-justify-between flex-align-center">' . "\n";
-	$html .= '<div class="flex-row">' . "\n";
+	$html = '<div class="flex-row flex-wrap flex-justify-between">' . "\n";
+	$html .= '<div class="flex-row flex-grow flex-justify-start">' . "\n";
 	// sport
 	if ( !is_null( $sport ) )
 		$html .= sprintf( '<div class="leaf"><span class="%s"></span> %s</div>', esc_attr( $sport['icon'] ), esc_html( $sport['name'] ) ) . "\n";
@@ -295,7 +303,7 @@ function balitsa_header_tag( array $meeting ): string {
 	// count
 	$html .= sprintf( '<div class="leaf"><span class="fas fa-fw fa-users"></span> %d</div>', count( $meeting['player_list'] ) ) . "\n";
 	$html .= '</div>' . "\n";
-	$html .= '<div class="flex-row">' . "\n";
+	$html .= '<div class="flex-row flex-grow flex-justify-end">' . "\n";
 	// date
 	$html .= sprintf( '<div class="leaf"><span class="fas fa-fw fa-calendar"></span> %s</div>', wp_date( 'D, j M', $dt->getTimestamp() ) ) . "\n";
 	// time
@@ -749,7 +757,7 @@ add_action( 'wp_ajax_' . 'balitsa_player_insert', function(): void {
 	$player_key = $meeting['player_ai']++;
 	$player = [];
 	$player['player_key'] = $player_key;
-	$player ['user'] = $user?->ID;
+	$player['user'] = $user?->ID;
 	if ( !is_null( $user ) ) {
 		$player['name'] = $user->display_name;
 		$player['rank'] = balitsa_get_user_rank_by_meeting( $meeting, $user );
