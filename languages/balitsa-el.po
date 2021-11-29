@@ -1,0 +1,213 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Balitsa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-28 19:42+0000\n"
+"PO-Revision-Date: 2021-11-28 22:34+0000\n"
+"Last-Translator: \n"
+"Language-Team: Ελληνικά\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.5.5; wp-5.8.2\n"
+"X-Domain: balitsa"
+
+#: metabox.php:94
+msgid "Accept"
+msgstr "Αποδοχή"
+
+#: metabox.php:40
+msgid "Access Permissions"
+msgstr "Δικαιώματα Πρόσβασης"
+
+#: metabox.php:67
+msgid "Action"
+msgstr "Ενέργεια"
+
+#: frontend.php:125
+msgid "Availability"
+msgstr "Διαθεσιμότητα"
+
+#. Name of the plugin
+msgid "Balitsa"
+msgstr ""
+
+#: frontend.php:134 metabox.php:223
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: frontend.php:387
+msgid "Clear"
+msgstr "Καθαρισμός"
+
+#: metabox.php:157
+msgid "Clone"
+msgstr "Αντιγραφή"
+
+#. Author of the plugin
+msgid "constracti"
+msgstr ""
+
+#: metabox.php:37
+msgid "Construct"
+msgstr "Δημιουργία"
+
+#. Description of the plugin
+msgid "Customization plugin of Balitsa website."
+msgstr ""
+
+#: metabox.php:230
+msgid "Danger Zone"
+msgstr "Επικίνδυνη Ζώνη"
+
+#: metabox.php:131 metabox.php:201
+msgid "Datetime"
+msgstr "Η/Ω"
+
+#: frontend.php:348
+msgid "Decrease"
+msgstr "Μείωση"
+
+#: frontend.php:218 metabox.php:180
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: frontend.php:220
+#, php-format
+msgid "Delete %s?"
+msgstr "Διαγραφή %s;"
+
+#: metabox.php:179
+msgid "Delete?"
+msgstr "Διαγραφή;"
+
+#: metabox.php:241
+msgid "Destruct"
+msgstr "Καταστροφή"
+
+#: metabox.php:240
+msgid "Destruct?"
+msgstr "Καταστροφή;"
+
+#: metabox.php:66
+msgid "Display Name"
+msgstr "Ψευδώνυμο"
+
+#. URI of the plugin
+msgid "https://github.com/constracti/balitsa"
+msgstr ""
+
+#: frontend.php:358
+msgid "Increase"
+msgstr "Αύξηση"
+
+#: frontend.php:154 metabox.php:125
+msgid "Insert"
+msgstr "Προσθήκη"
+
+#: metabox.php:61
+msgid "Invite Users"
+msgstr "Πρόσκληση Χρηστών"
+
+#: metabox.php:57
+msgid "Lock"
+msgstr "Κλείδωμα"
+
+#: metabox.php:44
+msgid "Locked"
+msgstr "Κλειδωμένο"
+
+#: metabox.php:124
+msgid "Meeting List"
+msgstr "Λίστα Συναντήσεων"
+
+#: frontend.php:377
+msgid "MVP"
+msgstr ""
+
+#: frontend.php:101
+msgid "Name"
+msgstr "Όνομα"
+
+#: frontend.php:244
+msgid "No"
+msgstr "Όχι"
+
+#: frontend.php:106
+msgid "Rank"
+msgstr "Βαθμός"
+
+#: frontend.php:533 metabox.php:23
+msgid "Refresh"
+msgstr "Ανανέωση"
+
+#: metabox.php:85
+msgid "Reject"
+msgstr "Απόρριψη"
+
+#: frontend.php:452
+msgid "Select"
+msgstr "Επιλογή"
+
+#: frontend.php:507
+msgid "Shuffle"
+msgstr "Ανάμιξη"
+
+#: frontend.php:517
+msgid "Split"
+msgstr "Χωρισμός"
+
+#: metabox.php:132 metabox.php:205
+msgid "Sport"
+msgstr "Άθλημα"
+
+#: frontend.php:330
+msgid "Statistics"
+msgstr "Στατιστικά"
+
+#: frontend.php:133 metabox.php:222
+msgid "Submit"
+msgstr "Υποβολή"
+
+#: frontend.php:115
+msgid "Team"
+msgstr "Ομάδα"
+
+#: metabox.php:133 metabox.php:218
+msgid "Teams"
+msgstr "Ομάδες"
+
+#: frontend.php:120
+msgid "Turn"
+msgstr "Σειρά"
+
+#: metabox.php:57
+msgid "Unlock"
+msgstr "Ξεκλείδωμα"
+
+#: metabox.php:44
+msgid "Unlocked"
+msgstr "Ξεκλείδωτο"
+
+#: frontend.php:497
+msgid "Unselect"
+msgstr "Αποεπιλογή"
+
+#: frontend.php:199 metabox.php:170
+msgid "Update"
+msgstr "Ενημέρωση"
+
+#: frontend.php:88
+msgid "User"
+msgstr "Χρήστης"
+
+#: frontend.php:127 frontend.php:232
+msgid "Yes"
+msgstr "Ναι"
+
+#: frontend.php:128 frontend.php:238
+msgid "Yes, if need be"
+msgstr "Ναι, αν πρέπει"

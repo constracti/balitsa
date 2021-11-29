@@ -1,0 +1,41 @@
+/* TODO prefix name with unique string */
+
+.flex-row {
+	display: flex;
+}
+.flex-col {
+	display: flex;
+	flex-direction: column;
+}
+.flex-wrap {
+	flex-wrap: wrap;
+}
+.flex-justify-between {
+	justify-content: space-between;
+}
+.flex-align-center {
+	align-items: center;
+}
+.flex-grow {
+	flex-grow: 1;
+}
+.flex-noshrink {
+	flex-shrink: 0;
+}
+
+.root4 {
+	padding: 2px 4px;
+}
+.root4 .leaf {
+	margin: 2px 4px;
+}
+
+.root8 {
+	padding: 8px;
+}
+.root8 .leaf {
+	margin: 8px;
+}
+.root-border {
+	border: thin solid #c3c4c7;
+}
