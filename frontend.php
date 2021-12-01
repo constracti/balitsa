@@ -305,7 +305,7 @@ function balitsa_header_tag( array $meeting ): string {
 	$html .= '</div>' . "\n";
 	$html .= '<div class="flex-row flex-grow flex-justify-end">' . "\n";
 	// date
-	$html .= sprintf( '<div class="leaf"><span class="fas fa-fw fa-calendar"></span> %s</div>', wp_date( 'D, j M', $dt->getTimestamp() ) ) . "\n";
+	$html .= sprintf( '<div class="leaf"><span class="fas fa-fw fa-calendar"></span> %s</div>', wp_date( 'D, j M Y', $dt->getTimestamp() ) ) . "\n";
 	// time
 	$html .= sprintf( '<div class="leaf"><span class="fas fa-fw fa-clock"></span> %s</div>', wp_date( 'g:ia', $dt->getTimestamp() ) ) . "\n";
 	$html .= '</div>' . "\n";
@@ -375,8 +375,39 @@ function balitsa_statistics_section( WP_Post $post, array $struct, array $meetin
 }
 
 function balitsa_mvp_section( WP_Post $post, array $struct, array $meeting ): string {
-	if ( $struct['readonly'] )
-		return '';
+	if ( $struct['readonly'] ) {
+		$votes = [];
+		$votes_max = 0;
+		$player_list = $meeting['player_list'];
+		uasort( $player_list, balitsa_sorter( 'turn', 'player_key' ) );
+		foreach ( $player_list as $player ) {
+			if ( is_null( $player['mvp'] ) )
+				continue;
+			$mvp = $player['mvp'];
+			if ( !array_key_exists( $mvp, $votes ) )
+				$votes[$mvp] = 0;
+			$votes[$mvp]++;
+			if ( $votes[$mvp] > $votes_max )
+				$votes_max = $votes[$mvp];
+		}
+		if ( empty( $votes ) )
+			return '';
+		$html = '<div class="flex-row flex-wrap flex-justify-between">' . "\n";
+		$html .= sprintf( '<div class="leaf"><span class="%s"></span> %s</div>', esc_attr( 'fas fa-fw fa-trophy' ), esc_html__( 'MVP:', 'balitsa' ) ) . "\n";
+		$html .= '<div class="flex-row flex-grow flex-justify-end">' . "\n";
+		foreach ( $votes as $player => $vote ) {
+			if ( $vote < $votes_max )
+				continue;
+			$player = $player_list[$player];
+			$user = get_user_by( 'ID', $player['user'] );
+			$name = $user !== FALSE ? $user->display_name : $player['name'];
+			$html .= sprintf( '<span class="leaf">%s</span>', esc_html( $name ) ) . "\n";
+		}
+		$html .= '</div>' . "\n";
+		$html .= '</div>' . "\n";
+		$html .= '<hr class="leaf" />' . "\n";
+		return $html;
+	}
 	$player = balitsa_get_player_key_by_user( $meeting );
 	if ( is_null( $player ) )
 		return '';
@@ -399,7 +430,7 @@ function balitsa_mvp_section( WP_Post $post, array $struct, array $meeting ): st
 	$html .= '</div>' . "\n";
 	$html .= '<div class="flex-row flex-wrap flex-align-center">' . "\n";
 	$player_list = $meeting['player_list'];
-	uasort( $player_list, 'balitsa_player_sortener' );
+	uasort( $player_list, balitsa_sorter( 'turn', 'player_key' ) );
 	foreach ( $player_list as $player ) {
 		$user = get_user_by( 'ID', $player['user'] );
 		if ( $user === FALSE )
@@ -433,7 +464,7 @@ function balitsa_frontend( WP_Post $post ): string {
 	$html = '<div class="balitsa-container flex-col root4">' . "\n";
 	if ( is_null( $struct['meeting_key'] ) ) {
 		$meeting_list = $struct['meeting_list'];
-		uasort( $meeting_list, 'balitsa_meeting_sortener' );
+		uasort( $meeting_list, balitsa_sorter( 'datetime', 'sport', 'meeting_key' ) );
 		foreach ( $meeting_list as $meeting_key => $meeting ) {
 			// header
 			$html .= balitsa_header_tag( $meeting );
@@ -443,7 +474,7 @@ function balitsa_frontend( WP_Post $post ): string {
 			$html .= balitsa_declaration_links( $post, $struct, $meeting, $player );
 			// players
 			$player_list = $meeting['player_list'];
-			uasort( $player_list, 'balitsa_player_sortener' );
+			uasort( $player_list, balitsa_sorter( 'timestamp', 'player_key' ) );
 			$html .= '<div class="flex-row flex-wrap">' . "\n";
 			foreach ( $player_list as $player_key => $player ) {
 				$html .= balitsa_player_tag( $post, $struct, $meeting, $player );
@@ -482,9 +513,7 @@ function balitsa_frontend( WP_Post $post ): string {
 		}
 		ksort( $teams );
 		foreach ( $teams as $team ) {
-			usort( $team, function( array $a, array $b ): int {
-				return $a['turn'] <=> $b['turn'];
-			} );
+			usort( $team, balitsa_sorter( 'turn', 'player_key' ) );
 			$html .= '<div class="flex-col leaf root4">' . "\n";
 			foreach ( $team as $player )
 				$html .= balitsa_player_tag( $post, $struct, $meeting, $player );
@@ -915,14 +944,7 @@ add_action( 'wp_ajax_' . 'balitsa_meeting_split', function(): void {
 			'seed' => mt_rand() / mt_getrandmax(),
 		];
 	}
-	usort( $cards, function( array $a, array $b ): int {
-		foreach ( [ 'rank', 'seed' ] as $p ) {
-			$cmp = $a[$p] <=> $b[$p];
-			if ( $cmp )
-				return $cmp;
-		}
-		return 0;
-	} );
+	usort( $cards, balitsa_sorter( 'rank', 'seed' ) );
 	$teams = [];
 	foreach ( $cards as $card ) {
 		if ( empty( $teams ) ) {

@@ -161,7 +161,7 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 			<tbody>
 <?php
 		$meeting_list = $struct['meeting_list'];
-		uasort( $meeting_list, 'balitsa_meeting_sortener' );
+		uasort( $meeting_list, balitsa_sorter( 'datetime', 'sport', 'meeting_key' ) );
 		foreach ( $meeting_list as $meeting_key => $meeting ) {
 			$dt = DateTime::createFromFormat( 'Y-m-d H:i:s', $meeting['datetime'], wp_timezone() );
 			$sport = NULL;

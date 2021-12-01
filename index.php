@@ -5,7 +5,7 @@
  * Plugin URI: https://github.com/constracti/balitsa
  * Description: Customization plugin of Balitsa website.
  * Author: constracti
- * Version: 0.1
+ * Version: 0.2
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: balitsa
@@ -52,12 +52,15 @@ function balitsa_attrs( array $attrs ): string {
 	return $return;
 }
 
-function balitsa_meeting_sortener( array $m1, array $m2 ): int {
-	return $m1['datetime'] <=> $m2['datetime'];
-}
-
-function balitsa_player_sortener( array $p1, array $p2 ): int {
-	return $p1['timestamp'] <=> $p2['timestamp'];
+function balitsa_sorter( string ...$keys ): callable {
+	return function( array $a1, array $a2 ): int {
+		foreach ( $keys as $key ) {
+			$cmp = $a1[$key] <=> $a2[$key];
+			if ( $cmp )
+				return $cmp;
+		}
+		return 0;
+	};
 }
 
 
