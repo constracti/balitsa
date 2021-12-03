@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) )
 	exit;
 
 add_filter( 'balitsa_tab_list', function( array $tabs ): array {
-	$tabs['settings'] = esc_html( 'Settings' );
+	$tabs['settings'] = esc_html__( 'Settings', 'balitsa' );
 	return $tabs;
 } );
 
@@ -22,13 +22,13 @@ function balitsa_settings_echo(): void {
 			'nonce' => balitsa_nonce_create( 'balitsa_settings_refresh' ),
 		], admin_url( 'admin-ajax.php' ) ),
 		'class' => 'balitsa-link button leaf',
-	] ), esc_html( 'Refresh' ) ) . "\n";
+	] ), esc_html__( 'Refresh', 'balitsa' ) ) . "\n";
 ?>
 		<span class="balitsa-spinner spinner leaf" data-balitsa-spinner-toggle="is-active"></span>
 	</div>
 	<hr class="leaf" />
 	<div class="flex-row flex-justify-between flex-align-center">
-		<h2 class="title leaf"><?= esc_html( 'Sports' ) ?></h2>
+		<h2 class="title leaf"><?= esc_html__( 'Sports', 'balitsa' ) ?></h2>
 <?php
 	echo sprintf( '<a%s>%s</a>', balitsa_attrs( [
 		'href' => add_query_arg( [
@@ -37,16 +37,16 @@ function balitsa_settings_echo(): void {
 		], admin_url( 'admin-ajax.php' ) ),
 		'class' => 'balitsa-insert button leaf',
 		'data-balitsa-form' => '.balitsa-form-sport',
-	] ), esc_html( 'Insert' ) ) . "\n";
+	] ), esc_html__( 'Insert', 'balitsa' ) ) . "\n";
 ?>
 	</div>
 	<div class="leaf">
 		<table class="fixed widefat striped">
 			<thead>
 				<tr>
-					<th class="column-primary has-row-actions"><?= esc_html( 'Name' ) ?></th>
-					<th><?= esc_html( 'Key' ) ?></th>
-					<th><?= esc_html( 'Statistics' ) ?></th>
+					<th class="column-primary has-row-actions"><?= esc_html__( 'Name', 'balitsa' ) ?></th>
+					<th><?= esc_html__( 'Key', 'balitsa' ) ?></th>
+					<th><?= esc_html__( 'Statistics', 'balitsa' ) ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -64,7 +64,7 @@ function balitsa_settings_echo(): void {
 			'data-balitsa-field-key' => esc_attr( $sport['key'] ),
 			'data-balitsa-field-name' => esc_attr( $sport['name'] ),
 			'data-balitsa-field-icon' => esc_attr( $sport['icon'] ),
-		] ), esc_html( 'Update' ) );
+		] ), esc_html__( 'Update', 'balitsa' ) );
 		$actions['delete'] = sprintf( '<span class="delete"><a%s>%s</a></span>', balitsa_attrs( [
 			'href' => add_query_arg( [
 				'action' => 'balitsa_settings_sport_delete',
@@ -72,8 +72,8 @@ function balitsa_settings_echo(): void {
 				'nonce' => balitsa_nonce_create( 'balitsa_settings_sport_delete', $sport_key ),
 			], admin_url( 'admin-ajax.php' ) ),
 			'class' => 'balitsa-link',
-			'data-balitsa-confirm' => esc_attr( sprintf( 'Delete sport %s?', $sport['name'] ) ),
-		] ), esc_html( 'Delete' ) );
+			'data-balitsa-confirm' => esc_attr( sprintf( __( 'Delete sport %s?', 'balitsa' ), $sport['name'] ) ),
+		] ), esc_html__( 'Delete', 'balitsa' ) );
 		$actions['insert_stat'] = sprintf( '<a%s>%s</a>', balitsa_attrs( [
 			'href' => add_query_arg( [
 				'action' => 'balitsa_settings_sport_stat_insert',
@@ -82,7 +82,7 @@ function balitsa_settings_echo(): void {
 			], admin_url( 'admin-ajax.php' ) ),
 			'class' => 'balitsa-insert',
 			'data-balitsa-form' => '.balitsa-form-stat',
-		] ), esc_html( 'Insert Statistic' ) ) . "\n";
+		] ), esc_html__( 'Insert Statistic', 'balitsa' ) ) . "\n";
 ?>
 				<tr>
 					<td class="column-primary has-row-actions">
@@ -112,8 +112,8 @@ function balitsa_settings_echo(): void {
 					'nonce' => balitsa_nonce_create( 'balitsa_settings_sport_stat_delete', $sport_key, $stat_key ),
 				], admin_url( 'admin-ajax.php' ) ),
 				'class' => 'balitsa-link',
-				'title' => esc_attr( 'Delete' ),
-				'data-balitsa-confirm' => esc_attr( sprintf( 'Delete statistic %s?', $stat['name'] ) ),
+				'title' => esc_attr__( 'Delete', 'balitsa' ),
+				'data-balitsa-confirm' => esc_attr( sprintf( __( 'Delete statistic %s?', 'balitsa' ), $stat['name'] ) ),
 			] ) ) . "\n";
 ?>
 							</div>
@@ -130,53 +130,53 @@ function balitsa_settings_echo(): void {
 		</table>
 	</div>
 	<div class="balitsa-form balitsa-form-sport leaf root8 root-border flex-col" style="display: none;">
-		<h3 class="leaf"><?= esc_html( 'Sport' ) ?></h3>
+		<h3 class="leaf"><?= esc_html__( 'Sport', 'balitsa' ) ?></h3>
 		<div class="leaf">
 			<table class="form-table" role="presentation">
 				<tbody>
 					<tr>
-						<th scope="row"><label for="balitsa-form-sport-key"><?= esc_html( 'Key' ) ?></label></th>
+						<th scope="row"><label for="balitsa-form-sport-key"><?= esc_html__( 'Key', 'balitsa' ) ?></label></th>
 						<td><input type="text" class="balitsa-field regular-text" data-balitsa-name="key" id="balitsa-form-sport-key" /></td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="balitsa-form-sport-name"><?= esc_html( 'Name' ) ?></label></th>
+						<th scope="row"><label for="balitsa-form-sport-name"><?= esc_html__( 'Name', 'balitsa' ) ?></label></th>
 						<td><input type="text" class="balitsa-field regular-text" data-balitsa-name="name" id="balitsa-form-sport-name" /></td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="balitsa-form-sport-icon"><?= esc_html( 'Icon' ) ?></label></th>
+						<th scope="row"><label for="balitsa-form-sport-icon"><?= esc_html__( 'Icon', 'balitsa' ) ?></label></th>
 						<td><input type="text" class="balitsa-field regular-text" data-balitsa-name="icon" id="balitsa-form-sport-icon" /></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="flex-row flex-justify-between flex-align-center">
-			<a href="" class="balitsa-link balitsa-submit button button-primary leaf"><?= esc_html( 'Submit' ) ?></a>
-			<a href="" class="balitsa-cancel button leaf"><?= esc_html( 'Cancel' ) ?></a>
+			<a href="" class="balitsa-link balitsa-submit button button-primary leaf"><?= esc_html__( 'Submit', 'balitsa' ) ?></a>
+			<a href="" class="balitsa-cancel button leaf"><?= esc_html__( 'Cancel', 'balitsa' ) ?></a>
 		</div>
 	</div>
 	<div class="balitsa-form balitsa-form-stat leaf root8 root-border flex-col" style="display: none;">
-		<h3 class="leaf"><?= esc_html( 'Statistic' ) ?></h3>
+		<h3 class="leaf"><?= esc_html__( 'Statistic', 'balitsa' ) ?></h3>
 		<div class="leaf">
 			<table class="form-table" role="presentation">
 				<tbody>
 					<tr>
-						<th scope="row"><label for="balitsa-form-stat-key"><?= esc_html( 'Key' ) ?></label></th>
+						<th scope="row"><label for="balitsa-form-stat-key"><?= esc_html__( 'Key', 'balitsa' ) ?></label></th>
 						<td><input type="text" class="balitsa-field regular-text" data-balitsa-name="key" id="balitsa-form-stat-key" /></td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="balitsa-form-stat-name"><?= esc_html( 'Name' ) ?></label></th>
+						<th scope="row"><label for="balitsa-form-stat-name"><?= esc_html__( 'Name', 'balitsa' ) ?></label></th>
 						<td><input type="text" class="balitsa-field regular-text" data-balitsa-name="name" id="balitsa-form-stat-name" /></td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="balitsa-form-stat-icon"><?= esc_html( 'Icon' ) ?></label></th>
+						<th scope="row"><label for="balitsa-form-stat-icon"><?= esc_html__( 'Icon', 'balitsa' ) ?></label></th>
 						<td><input type="text" class="balitsa-field regular-text" data-balitsa-name="icon" id="balitsa-form-stat-icon" /></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="flex-row flex-justify-between flex-align-center">
-			<a href="" class="balitsa-link balitsa-submit button button-primary leaf"><?= esc_html( 'Submit' ) ?></a>
-			<a href="" class="balitsa-cancel button leaf"><?= esc_html( 'Cancel' ) ?></a>
+			<a href="" class="balitsa-link balitsa-submit button button-primary leaf"><?= esc_html__( 'Submit', 'balitsa' ) ?></a>
+			<a href="" class="balitsa-cancel button leaf"><?= esc_html__( 'Cancel', 'balitsa' ) ?></a>
 		</div>
 	</div>
 </div>

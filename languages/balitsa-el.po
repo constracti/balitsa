@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Balitsa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-28 19:42+0000\n"
-"PO-Revision-Date: 2021-11-28 22:34+0000\n"
+"PO-Revision-Date: 2021-12-03 19:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: Ελληνικά\n"
 "Language: el\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Loco-Version: 2.5.5; wp-5.8.2\n"
 "X-Domain: balitsa"
 
-#: metabox.php:94
+#: metabox.php:75
 msgid "Accept"
 msgstr "Αποδοχή"
 
@@ -23,7 +23,7 @@ msgstr "Αποδοχή"
 msgid "Access Permissions"
 msgstr "Δικαιώματα Πρόσβασης"
 
-#: metabox.php:67
+#: metabox.php:82
 msgid "Action"
 msgstr "Ενέργεια"
 
@@ -32,24 +32,26 @@ msgid "Availability"
 msgstr "Διαθεσιμότητα"
 
 #. Name of the plugin
+#: index.php:70 index.php:71
 msgid "Balitsa"
-msgstr ""
+msgstr "Μπαλίτσα"
 
-#: frontend.php:134 metabox.php:223
+#: frontend.php:134 settings.php:154 settings.php:179 metabox.php:132
+#: metabox.php:248
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: frontend.php:387
+#: frontend.php:428
 msgid "Clear"
 msgstr "Καθαρισμός"
 
-#: metabox.php:157
+#: metabox.php:182
 msgid "Clone"
 msgstr "Αντιγραφή"
 
 #. Author of the plugin
 msgid "constracti"
-msgstr ""
+msgstr "constracti"
 
 #: metabox.php:37
 msgid "Construct"
@@ -57,60 +59,82 @@ msgstr "Δημιουργία"
 
 #. Description of the plugin
 msgid "Customization plugin of Balitsa website."
-msgstr ""
+msgstr "Πρόσθετο προσαρμογών του ιστοτόπου Μπαλίτσα."
 
-#: metabox.php:230
+#: metabox.php:255
 msgid "Danger Zone"
 msgstr "Επικίνδυνη Ζώνη"
 
-#: metabox.php:131 metabox.php:201
+#: metabox.php:156 metabox.php:226
 msgid "Datetime"
 msgstr "Η/Ω"
 
-#: frontend.php:348
+#: frontend.php:358
 msgid "Decrease"
 msgstr "Μείωση"
 
-#: frontend.php:218 metabox.php:180
+#: frontend.php:226 settings.php:76 settings.php:115 metabox.php:205
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: frontend.php:220
+#: frontend.php:228
 #, php-format
 msgid "Delete %s?"
 msgstr "Διαγραφή %s;"
 
-#: metabox.php:179
+#: settings.php:75
+#, php-format
+msgid "Delete sport %s?"
+msgstr "Διαγραφή αθλήματος %s;"
+
+#: settings.php:116
+#, php-format
+msgid "Delete statistic %s?"
+msgstr "Διαγραφή στατιστικού %s;"
+
+#: metabox.php:204
 msgid "Delete?"
 msgstr "Διαγραφή;"
 
-#: metabox.php:241
+#: metabox.php:266
 msgid "Destruct"
 msgstr "Καταστροφή"
 
-#: metabox.php:240
+#: metabox.php:265
 msgid "Destruct?"
 msgstr "Καταστροφή;"
 
-#: metabox.php:66
+#: metabox.php:81
 msgid "Display Name"
 msgstr "Ψευδώνυμο"
 
 #. URI of the plugin
 msgid "https://github.com/constracti/balitsa"
-msgstr ""
+msgstr "https://github.com/constracti/balitsa"
 
-#: frontend.php:358
+#: settings.php:146 settings.php:171
+msgid "Icon"
+msgstr "Εικονίδιο"
+
+#: frontend.php:368
 msgid "Increase"
 msgstr "Αύξηση"
 
-#: frontend.php:154 metabox.php:125
+#: frontend.php:154 settings.php:40 metabox.php:150
 msgid "Insert"
 msgstr "Προσθήκη"
 
-#: metabox.php:61
+#: settings.php:85
+msgid "Insert Statistic"
+msgstr "Εισαγωγή Στατιστικού"
+
+#: metabox.php:74
 msgid "Invite Users"
 msgstr "Πρόσκληση Χρηστών"
+
+#: settings.php:48 settings.php:138 settings.php:163
+msgid "Key"
+msgstr "Κλειδί"
 
 #: metabox.php:57
 msgid "Lock"
@@ -120,19 +144,23 @@ msgstr "Κλείδωμα"
 msgid "Locked"
 msgstr "Κλειδωμένο"
 
-#: metabox.php:124
+#: metabox.php:149
 msgid "Meeting List"
 msgstr "Λίστα Συναντήσεων"
 
-#: frontend.php:377
+#: frontend.php:418
 msgid "MVP"
-msgstr ""
+msgstr "MVP"
 
-#: frontend.php:101
+#: frontend.php:396
+msgid "MVP:"
+msgstr "MVP:"
+
+#: frontend.php:101 settings.php:47 settings.php:142 settings.php:167
 msgid "Name"
 msgstr "Όνομα"
 
-#: frontend.php:244
+#: frontend.php:254
 msgid "No"
 msgstr "Όχι"
 
@@ -140,35 +168,48 @@ msgstr "Όχι"
 msgid "Rank"
 msgstr "Βαθμός"
 
-#: frontend.php:533 metabox.php:23
+#: frontend.php:571 settings.php:25 metabox.php:23
 msgid "Refresh"
 msgstr "Ανανέωση"
 
-#: metabox.php:85
+#: metabox.php:102
 msgid "Reject"
 msgstr "Απόρριψη"
 
-#: frontend.php:452
+#: frontend.php:494
 msgid "Select"
 msgstr "Επιλογή"
 
-#: frontend.php:507
+#: index.php:107 settings.php:7
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: frontend.php:546
 msgid "Shuffle"
 msgstr "Ανάμιξη"
 
-#: frontend.php:517
+#: frontend.php:555
 msgid "Split"
 msgstr "Χωρισμός"
 
-#: metabox.php:132 metabox.php:205
+#: settings.php:133 metabox.php:157 metabox.php:230
 msgid "Sport"
 msgstr "Άθλημα"
 
-#: frontend.php:330
+#: settings.php:31
+msgid "Sports"
+msgstr "Αθλήματα"
+
+#: settings.php:158
+msgid "Statistic"
+msgstr "Στατιστικό"
+
+#: frontend.php:340 settings.php:49
 msgid "Statistics"
 msgstr "Στατιστικά"
 
-#: frontend.php:133 metabox.php:222
+#: frontend.php:133 settings.php:153 settings.php:178 metabox.php:131
+#: metabox.php:247
 msgid "Submit"
 msgstr "Υποβολή"
 
@@ -176,7 +217,7 @@ msgstr "Υποβολή"
 msgid "Team"
 msgstr "Ομάδα"
 
-#: metabox.php:133 metabox.php:218
+#: metabox.php:158 metabox.php:243
 msgid "Teams"
 msgstr "Ομάδες"
 
@@ -192,22 +233,22 @@ msgstr "Ξεκλείδωμα"
 msgid "Unlocked"
 msgstr "Ξεκλείδωτο"
 
-#: frontend.php:497
+#: frontend.php:537
 msgid "Unselect"
 msgstr "Αποεπιλογή"
 
-#: frontend.php:199 metabox.php:170
+#: frontend.php:207 settings.php:67 metabox.php:195
 msgid "Update"
 msgstr "Ενημέρωση"
 
-#: frontend.php:88
+#: frontend.php:88 metabox.php:116
 msgid "User"
 msgstr "Χρήστης"
 
-#: frontend.php:127 frontend.php:232
+#: frontend.php:127 frontend.php:242
 msgid "Yes"
 msgstr "Ναι"
 
-#: frontend.php:128 frontend.php:238
+#: frontend.php:128 frontend.php:248
 msgid "Yes, if need be"
 msgstr "Ναι, αν πρέπει"

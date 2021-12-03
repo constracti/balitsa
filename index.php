@@ -67,15 +67,15 @@ function balitsa_sorter( string ...$keys ): callable {
 // settings page
 
 add_action( 'admin_menu', function(): void {
-	$page_title = esc_html( 'Balitsa' );
-	$menu_title = esc_html( 'Balitsa' );
+	$page_title = esc_html__( 'Balitsa', 'balitsa' );
+	$menu_title = esc_html__( 'Balitsa', 'balitsa' );
 	$capability = 'manage_options';
 	$menu_slug = 'balitsa';
 	add_options_page( $page_title, $menu_title, $capability, $menu_slug, function() {
 		$tab_curr = balitsa_get_str( 'tab', TRUE ) ?? 'settings';
 ?>
 <div class="wrap">
-	<h1><?= 'Balitsa' ?></h1>
+	<h1><?= esc_html__( 'Balitsa', 'balitsa' ) ?></h1>
 	<h2 class="nav-tab-wrapper">
 <?php
 		foreach ( apply_filters( 'balitsa_tab_list', [] ) as $tab_slug => $tab_name ) {
@@ -104,7 +104,7 @@ add_action( 'admin_menu', function(): void {
 add_filter( 'plugin_action_links', function( array $actions, string $plugin_file ): array {
 	if ( $plugin_file !== basename( __DIR__ ) . '/' . basename( __FILE__ ) )
 		return $actions;
-	$actions['settings'] = sprintf( '<a href="%s">%s</a>', menu_page_url( 'balitsa', FALSE ), esc_html( 'Settings' ) );
+	$actions['settings'] = sprintf( '<a href="%s">%s</a>', menu_page_url( 'balitsa', FALSE ), esc_html__( 'Settings', 'balitsa' ) );
 	return $actions;
 }, 10, 2 );
 
