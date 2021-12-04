@@ -5,7 +5,7 @@
  * Plugin URI: https://github.com/constracti/balitsa
  * Description: Customization plugin of Balitsa website.
  * Author: constracti
- * Version: 0.2
+ * Version: 0.2.1
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: balitsa

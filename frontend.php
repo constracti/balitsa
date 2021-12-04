@@ -20,7 +20,7 @@ add_action( 'pre_get_posts', function( WP_Query $query ): void {
 		[
 			'key' => 'balitsa_access',
 			'compare' => 'LIKE',
-			'value' => sprintf( '%%#%d#%%', $user_id ),
+			'value' => sprintf( '#%d#', $user_id ),
 		],
 	] );
 } );
