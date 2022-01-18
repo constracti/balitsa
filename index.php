@@ -4,10 +4,12 @@
  * Plugin Name: Balitsa
  * Plugin URI: https://github.com/constracti/balitsa
  * Description: Customization plugin of Balitsa website.
+ * Version: 0.2.2
+ * Requires PHP: 8.0
  * Author: constracti
- * Version: 0.2.1
- * License: GPL2
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Author URI: https://github.com/constracti
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: balitsa
  */
 
@@ -53,7 +55,7 @@ function balitsa_attrs( array $attrs ): string {
 }
 
 function balitsa_sorter( string ...$keys ): callable {
-	return function( array $a1, array $a2 ): int {
+	return function( array $a1, array $a2 ) use ( $keys ): int {
 		foreach ( $keys as $key ) {
 			$cmp = $a1[$key] <=> $a2[$key];
 			if ( $cmp )
