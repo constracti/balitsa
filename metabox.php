@@ -10,7 +10,7 @@ function balitsa_metabox_echo( WP_Post $post ): void {
 	$access = balitsa_get_access( $post );
 	$sports = balitsa_get_sports();
 ?>
-<div class="balitsa-container root4 flex-col" style="margin: 0px -4px 0px -14px;">
+<div class="balitsa-container root flex-col" style="margin: 0px -4px 0px -14px;">
 	<div class="flex-row flex-justify-between">
 <?php
 	echo sprintf( '<a%s>%s</a>', balitsa_attrs( [

@@ -29,18 +29,11 @@
 	flex-shrink: 0;
 }
 
-.root4 {
+.root {
 	padding: 2px 4px;
 }
-.root4 .leaf {
+.root .leaf {
 	margin: 2px 4px;
-}
-
-.root8 {
-	padding: 8px;
-}
-.root8 .leaf {
-	margin: 8px;
 }
 .root-border {
 	border: thin solid #c3c4c7;

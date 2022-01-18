@@ -13,7 +13,7 @@ add_action( 'balitsa_tab_html_settings', 'balitsa_settings_echo' );
 function balitsa_settings_echo(): void {
 	$sports = balitsa_get_sports();
 ?>
-<div class="balitsa-container root8 flex-col">
+<div class="balitsa-container root flex-col">
 	<div class="flex-row flex-justify-between">
 <?php
 	echo sprintf( '<a%s>%s</a>', balitsa_attrs( [
@@ -129,7 +129,7 @@ function balitsa_settings_echo(): void {
 			</tbody>
 		</table>
 	</div>
-	<div class="balitsa-form balitsa-form-sport leaf root8 root-border flex-col" style="display: none;">
+	<div class="balitsa-form balitsa-form-sport leaf root root-border flex-col" style="display: none;">
 		<h3 class="leaf"><?= esc_html__( 'Sport', 'balitsa' ) ?></h3>
 		<div class="leaf">
 			<table class="form-table" role="presentation">
@@ -154,7 +154,7 @@ function balitsa_settings_echo(): void {
 			<a href="" class="balitsa-cancel button leaf"><?= esc_html__( 'Cancel', 'balitsa' ) ?></a>
 		</div>
 	</div>
-	<div class="balitsa-form balitsa-form-stat leaf root8 root-border flex-col" style="display: none;">
+	<div class="balitsa-form balitsa-form-stat leaf root root-border flex-col" style="display: none;">
 		<h3 class="leaf"><?= esc_html__( 'Statistic', 'balitsa' ) ?></h3>
 		<div class="leaf">
 			<table class="form-table" role="presentation">

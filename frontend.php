@@ -155,7 +155,7 @@ function balitsa_player_insert_link( WP_Post $post, string $meeting_key ): strin
 }
 
 function balitsa_player_tag( WP_Post $post, array $struct, array $meeting, array $player ): string {
-	$html = '<div class="flex-row flex-wrap flex-justify-between root4 leaf" style="border: thin solid;">' . "\n";
+	$html = '<div class="flex-row flex-wrap flex-justify-between root leaf" style="border: thin solid;">' . "\n";
 	$html .= '<div class="flex-row flex-grow flex-justify-start">' . "\n";
 	$html .= '<div class="leaf">' . "\n";
 	if ( is_null( $struct['meeting_key'] ) ) {
@@ -461,7 +461,7 @@ function balitsa_frontend( WP_Post $post ): string {
 		$struct = NULL;
 	if ( is_null( $struct ) )
 		return '';
-	$html = '<div class="balitsa-container flex-col root4">' . "\n";
+	$html = '<div class="balitsa-container flex-col root">' . "\n";
 	if ( is_null( $struct['meeting_key'] ) ) {
 		$meeting_list = $struct['meeting_list'];
 		uasort( $meeting_list, balitsa_sorter( 'datetime', 'sport', 'meeting_key' ) );
@@ -514,7 +514,7 @@ function balitsa_frontend( WP_Post $post ): string {
 		ksort( $teams );
 		foreach ( $teams as $team ) {
 			usort( $team, balitsa_sorter( 'turn', 'player_key' ) );
-			$html .= '<div class="flex-col leaf root4">' . "\n";
+			$html .= '<div class="flex-col leaf root">' . "\n";
 			foreach ( $team as $player )
 				$html .= balitsa_player_tag( $post, $struct, $meeting, $player );
 			$html .= '</div>' . "\n";
