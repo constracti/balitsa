@@ -128,14 +128,11 @@ final class Balitsa_Struct {
 	public function metabox(): string {
 		$html = '<div class="balitsa-home balitsa-root balitsa-flex-col" style="margin: 0px -4px 0px -14px;">' . "\n";
 		$html .= $this->metabox_refresh_section();
-		$html .= '<hr class="balitsa-leaf" />' . "\n";
 		if ( is_null( $this->struct ) ) {
 			$html .= $this->metabox_construct_section();
 		} else {
 			$html .= $this->metabox_meeting_section();
-			$html .= '<hr class="balitsa-leaf" />' . "\n";
 			$html .= $this->metabox_lock_section();
-			$html .= '<hr class="balitsa-leaf" />' . "\n";
 			$html .= $this->metabox_destruct_section();
 		}
 		$html .= '</div>' . "\n";
@@ -278,7 +275,7 @@ final class Balitsa_Struct {
 		$html .= '</label>' . "\n";
 		$html .= '<label class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
 		$html .= sprintf( '<span class="balitsa-leaf">%s</span>', esc_html__( 'Teams', 'balitsa' ) ) . "\n";
-		$html .= '<input type="number" class="balitsa-field balitsa-leaf" data-balitsa-name="teams" min="1" style="max-width: 100px;" />' . "\n";
+		$html .= '<input type="number" class="balitsa-field balitsa-leaf" data-balitsa-name="teams" min="1" />' . "\n";
 		$html .= '</label>' . "\n";
 		$html .= '<div class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
 		$html .= sprintf( '<a href="" class="balitsa-link balitsa-submit button button-primary balitsa-leaf">%s</a>', esc_html__( 'Submit', 'balitsa' ) ) . "\n";
@@ -315,21 +312,23 @@ final class Balitsa_Struct {
 	public function frontend(): string {
 		if ( is_null( $this->struct ) )
 			return '';
-		$html = '<div class="balitsa-home balitsa-flex-col balitsa-root">' . "\n";
+		$html = '<div class="balitsa-home balitsa-meeting-list">' . "\n";
 		if ( is_null( $this->struct['meeting_key'] ) ) {
 			$meeting_list = $this->struct['meeting_list'];
 			uasort( $meeting_list, Balitsa::sorter( 'datetime', 'meeting_key' ) );
 			foreach ( $meeting_list as $meeting_key => $meeting ) {
 				$html .= $this->frontend_header_tag( $meeting_key );
+				$html .= '<div class="balitsa-declaration">' . "\n";
 				$html .= $this->frontend_declaration_choices( $meeting_key );
 				$html .= $this->frontend_declaration_players( $meeting_key );
+				$html .= '</div><!-- .balitsa-declaration -->' . "\n";
 				if ( $this->can_edit() && !$this->struct['readonly'] ) {
-					$html .= '<div class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
+					$html .= '<div class="balitsa-meeting-actions">' . "\n";
 					$html .= $this->frontend_meeting_select_link( $meeting_key );
 					$html .= $this->frontend_player_insert_link( $meeting_key );
-					$html .= '</div>' . "\n";
+					$html .= '</div><!-- .balitsa-meeting-actions -->' . "\n";
 				}
-				$html .= '<hr class="balitsa-leaf" />' . "\n";
+				$html .= '<hr class="balitsa-sep" />' . "\n";
 			}
 		} else {
 			$html .= $this->frontend_header_tag();
@@ -337,21 +336,22 @@ final class Balitsa_Struct {
 			$html .= $this->frontend_statistics_section();
 			$html .= $this->frontend_mvp_section();
 			if ( $this->can_edit() && !$this->struct['readonly'] ) {
-				$html .= '<div class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
+				$html .= '<div class="balitsa-meeting-actions">' . "\n";
 				$html .= $this->frontend_meeting_unselect_link();
 				$html .= $this->frontend_meeting_shuffle_link();
 				$html .= $this->frontend_meeting_split_link();
 				$html .= $this->frontend_player_insert_link();
-				$html .= '</div>' . "\n";
-				$html .= '<hr class="balitsa-leaf" />' . "\n";
+				$html .= '</div><!-- .balitsa-meeting-actions -->' . "\n";
 			}
+			$html .= '<hr class="balitsa-sep" />' . "\n";
 		}
-		$html .= self::frontend_player_form();
-		$html .= '<div class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
+		if ( $this->can_edit() && !$this->struct['readonly'] )
+			$html .= self::frontend_player_form();
+		$html .= '<div class="balitsa-footer">' . "\n";
 		$html .= $this->frontend_refresh_link();
-		$html .= '<span class="balitsa-spinner balitsa-leaf" data-balitsa-spinner-toggle="fas fa-fw fa-spinner fa-pulse"></span>' . "\n";
-		$html .= '</div>' . "\n";
-		$html .= '</div>' . "\n";
+		$html .= '<span class="balitsa-spinner" data-balitsa-spinner-toggle="fas fa-fw fa-spinner fa-pulse"></span>' . "\n";
+		$html .= '</div><!-- .balitsa-footer -->' . "\n";
+		$html .= '</div><!-- .balitsa-meeting-list -->' . "\n";
 		return $html;
 	}
 
@@ -367,32 +367,37 @@ final class Balitsa_Struct {
 		$sport = Balitsa_Sports::select( $meeting['sport'] );
 		// https://wordpress.org/support/article/formatting-date-and-time/
 		$dt = DateTime::createFromFormat( 'Y-m-d H:i:s', $meeting['datetime'], wp_timezone() );
-		$html = '<div class="balitsa-flex-row balitsa-flex-wrap balitsa-flex-justify-between">' . "\n";
-		$html .= '<div class="balitsa-flex-row balitsa-flex-grow balitsa-flex-justify-start">' . "\n";
+		$html = '<div class="balitsa-header">' . "\n";
+		$html .= '<div class="balitsa-header-left">' . "\n";
 		// sport
-		if ( !is_null( $sport ) )
-			$html .= sprintf( '<div class="balitsa-leaf"><span class="%s"></span> %s</div>', esc_attr( $sport['icon'] ), esc_html( $sport['name'] ) ) . "\n";
-		else
-			$html .= '<div class="leaf">&mdash;</div>' . "\n";
+		if ( !is_null( $sport ) ) {
+			$html .= '<div class="balitsa-sport">' . "\n";
+			$html .= sprintf( '<span class="%s"></span>', esc_attr( $sport['icon'] ) ) . "\n";
+			$html .= sprintf( '<span>%s</span>', esc_html( $sport['name'] ) ) . "\n";
+			$html .= '</div><!-- .balitsa-sport -->' . "\n";
+		} else {
+			$html .= '<div class="balitsa-sport">&mdash;</div>' . "\n";
+		}
 		// count
-		$html .= sprintf( '<div class="balitsa-leaf"><span class="fas fa-fw fa-users"></span> %d</div>', count( $meeting['player_list'] ) ) . "\n";
-		$html .= '</div>' . "\n";
-		$html .= '<div class="balitsa-flex-row balitsa-flex-grow balitsa-flex-justify-end">' . "\n";
+		$html .= sprintf( '<div class="balitsa-count"><span class="fas fa-fw fa-users"></span> %d</div>', count( $meeting['player_list'] ) ) . "\n";
+		$html .= '</div><!-- .balitsa-header-left -->' . "\n";
+		$html .= '<div class="balitsa-header-right">' . "\n";
 		// date
-		$html .= sprintf( '<div class="balitsa-leaf"><span class="fas fa-fw fa-calendar"></span> %s</div>', wp_date( 'D, j M Y', $dt->getTimestamp() ) ) . "\n";
+		$html .= sprintf( '<div class="balitsa-date"><span class="fas fa-fw fa-calendar"></span> %s</div>', wp_date( 'D, j M Y', $dt->getTimestamp() ) ) . "\n";
 		// time
-		$html .= sprintf( '<div class="balitsa-leaf"><span class="fas fa-fw fa-clock"></span> %s</div>', wp_date( 'g:ia', $dt->getTimestamp() ) ) . "\n";
+		$html .= sprintf( '<div class="balitsa-time"><span class="fas fa-fw fa-clock"></span> %s</div>', wp_date( 'g:ia', $dt->getTimestamp() ) ) . "\n";
 		$html .= '</div>' . "\n";
-		$html .= '</div>' . "\n";
+		$html .= '</div><!-- .balitsa-header -->' . "\n";
 		return $html;
 	}
 
 	private static function frontend_player_form(): string {
-		$html = '<div class="balitsa-form balitsa-form-player balitsa-flex-col" style="display: none;">' . "\n";
+		$html = '<div class="balitsa-form balitsa-form-player" style="display: none;">' . "\n";
+		$html .= '<div class="balitsa-form-player-fields">' . "\n";
 		// user
-		$html .= '<label class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
-		$html .= sprintf( '<span class="balitsa-leaf">%s</span>', esc_html__( 'User', 'balitsa' ) ) . "\n";
-		$html .= '<select class="balitsa-field balitsa-leaf" data-balitsa-name="user">' . "\n";
+		$html .= '<label>' . "\n";
+		$html .= sprintf( '<span>%s</span>', esc_html__( 'User', 'balitsa' ) ) . "\n";
+		$html .= '<select class="balitsa-field" data-balitsa-name="user">' . "\n";
 		$html .= '<option value=""></option>' . "\n";
 		$users = get_users( [
 			'orderby' => 'display_name',
@@ -403,44 +408,44 @@ final class Balitsa_Struct {
 		$html .= '</select>' . "\n";
 		$html .= '</label>' . "\n";
 		// name
-		$html .= '<label class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
-		$html .= sprintf( '<span class="balitsa-leaf">%s</span>', esc_html__( 'Name', 'balitsa' ) ) . "\n";
-		$html .= '<input type="text" class="balitsa-field balitsa-leaf" data-balitsa-name="name" />' . "\n";
+		$html .= '<label>' . "\n";
+		$html .= sprintf( '<span>%s</span>', esc_html__( 'Name', 'balitsa' ) ) . "\n";
+		$html .= '<input type="text" class="balitsa-field" data-balitsa-name="name" />' . "\n";
 		$html .= '</label>' . "\n";
 		// rank
-		$html .= '<label class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
-		$html .= sprintf( '<span class="balitsa-leaf">%s</span>', esc_html__( 'Rank', 'balitsa' ) ) . "\n";
-		$html .= '<select class="balitsa-field balitsa-leaf" data-balitsa-name="rank">' . "\n";
+		$html .= '<label>' . "\n";
+		$html .= sprintf( '<span>%s</span>', esc_html__( 'Rank', 'balitsa' ) ) . "\n";
+		$html .= '<select class="balitsa-field" data-balitsa-name="rank">' . "\n";
 		$html .= '<option value=""></option>' . "\n";
 		for ( $r = Balitsa_Ranks::MIN; $r <= Balitsa_Ranks::MAX; $r++ )
 			$html .= sprintf( '<option value="%d">%d</option>', $r, $r ) . "\n";
 		$html .= '</select>' . "\n";
 		$html .= '</label>' . "\n";
 		// team
-		$html .= '<label class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
-		$html .= sprintf( '<span class="balitsa-leaf">%s</span>', esc_html__( 'Team', 'balitsa' ) ) . "\n";
-		$html .= '<input type="number" class="balitsa-field balitsa-leaf" data-balitsa-name="team" min="0" />' . "\n";
+		$html .= '<label>' . "\n";
+		$html .= sprintf( '<span>%s</span>', esc_html__( 'Team', 'balitsa' ) ) . "\n";
+		$html .= '<input type="number" class="balitsa-field" data-balitsa-name="team" min="0" />' . "\n";
 		$html .= '</label>' . "\n";
 		// turn
-		$html .= '<label class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
-		$html .= sprintf( '<span class="balitsa-leaf">%s</span>', esc_html__( 'Turn', 'balitsa' ) ) . "\n";
-		$html .= '<input type="number" class="balitsa-field balitsa-leaf" data-balitsa-name="turn" />' . "\n";
+		$html .= '<label>' . "\n";
+		$html .= sprintf( '<span>%s</span>', esc_html__( 'Turn', 'balitsa' ) ) . "\n";
+		$html .= '<input type="number" class="balitsa-field" data-balitsa-name="turn" />' . "\n";
 		$html .= '</label>' . "\n";
 		// availability
-		$html .= '<label class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
-		$html .= sprintf( '<span class="balitsa-leaf">%s</span>', esc_html__( 'Availability', 'balitsa' ) ) . "\n";
-		$html .= '<select class="balitsa-field balitsa-leaf" data-balitsa-name="availability">' . "\n";
+		$html .= '<label>' . "\n";
+		$html .= sprintf( '<span>%s</span>', esc_html__( 'Availability', 'balitsa' ) ) . "\n";
+		$html .= '<select class="balitsa-field" data-balitsa-name="availability">' . "\n";
 		$html .= sprintf( '<option value="%s">%s</option>', esc_attr( 'on' ), esc_html__( 'Yes', 'balitsa' ) ) . "\n";
 		$html .= sprintf( '<option value="%s">%s</option>', esc_attr( 'off' ), esc_html__( 'Yes, if need be', 'balitsa' ) ) . "\n";
 		$html .= '</select>' . "\n";
 		$html .= '</label>' . "\n";
+		$html .= '</div><!-- .balitsa-form-player-fields -->' . "\n";
 		// submit
-		$html .= '<div class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
-		$html .= sprintf( '<a href="" class="balitsa-link balitsa-submit balitsa-leaf"><span class="fas fa-fw fa-save"></span> %s</a>', esc_html__( 'Submit', 'balitsa' ) ) . "\n";
-		$html .= sprintf( '<a href="" class="balitsa-cancel balitsa-leaf"><span class="fas fa-fw fa-ban"></span> %s</a>', esc_html__( 'Cancel', 'balitsa' ) ) . "\n";
-		$html .= '</div>' . "\n";
-		$html .= '<hr class="balitsa-leaf" />' . "\n";
-		$html .= '</div>' . "\n";
+		$html .= '<div class="balitsa-form-player-footer">' . "\n";
+		$html .= sprintf( '<a href="" class="balitsa-link balitsa-submit balitsa-button"><span class="fas fa-fw fa-save"></span> %s</a>', esc_html__( 'Submit', 'balitsa' ) ) . "\n";
+		$html .= sprintf( '<a href="" class="balitsa-cancel balitsa-button"><span class="fas fa-fw fa-ban"></span> %s</a>', esc_html__( 'Cancel', 'balitsa' ) ) . "\n";
+		$html .= '</div><!-- .balitsa-form-player-footer -->' . "\n";
+		$html .= '</div><!-- .balitsa-form-player -->' . "\n";
 		return $html;
 	}
 
@@ -477,7 +482,7 @@ final class Balitsa_Struct {
 			else
 				$availability_list['maybe']['count']++;
 		}
-		$html = '<div class="flex-row flex-align-center">' . "\n";
+		$html = '<div class="balitsa-declaration-choices">' . "\n";
 		foreach ( $availability_list as $availability => $a ) {
 			$icon = sprintf( '<span class="%s"></span> %s', esc_attr( $a['icon'] ), esc_html( $a['text'] ) );
 			if ( !is_null( $a['count'] ) )
@@ -488,13 +493,13 @@ final class Balitsa_Struct {
 						'meeting' => $meeting['meeting_key'],
 						'availability' => $availability,
 					] ),
-					'class' => 'balitsa-link balitsa-leaf',
+					'class' => 'balitsa-link balitsa-button',
 				] ), $icon ) . "\n";
 			} else {
-				$html .= sprintf( '<span class="balitsa-leaf">%s</span>', $icon ) . "\n";
+				$html .= sprintf( '<span class="balitsa-button">%s</span>', $icon ) . "\n";
 			}
 		}
-		$html .= '</div>' . "\n";
+		$html .= '</div><!-- .balitsa-declaration-choices -->' . "\n";
 		return $html;
 	}
 
@@ -505,10 +510,10 @@ final class Balitsa_Struct {
 		$meeting = $this->struct['meeting_list'][$meeting_key];
 		$player_list = $meeting['player_list'];
 		uasort( $player_list, Balitsa::sorter( 'timestamp', 'player_key' ) );
-		$html = '<div class="balitsa-flex-row balitsa-flex-wrap">' . "\n";
+		$html = '<div class="balitsa-declaration-players">' . "\n";
 		foreach ( $player_list as $player_key => $player )
 			$html .= $this->frontend_player_tag( $player_key, $meeting_key );
-		$html .= '</div>' . "\n";
+		$html .= '</div><!-- .balitsa-declaration-players -->' . "\n";
 		return $html;
 	}
 
@@ -525,15 +530,15 @@ final class Balitsa_Struct {
 			$teams[$team][] = $player;
 		}
 		ksort( $teams );
-		$html = '';
+		$html = '<div class="balitsa-team-list">';
 		foreach ( $teams as $team ) {
 			usort( $team, Balitsa::sorter( 'turn', 'player_key' ) );
-			$html .= '<div class="balitsa-flex-col balitsa-leaf balitsa-root">' . "\n";
+			$html .= '<div class="balitsa-team">' . "\n";
 			foreach ( $team as $player )
 				$html .= $this->frontend_player_tag( $player['player_key'] );
-			$html .= '</div>' . "\n";
+			$html .= '</div><!-- .balitsa-team -->' . "\n";
 		}
-		$html .= '<hr class="balitsa-leaf" />' . "\n";
+		$html .= '</div><!-- .balitsa-team-list -->' . "\n";
 		return $html;
 	}
 
@@ -549,19 +554,19 @@ final class Balitsa_Struct {
 		$meeting = $this->struct['meeting_list'][$meeting_key];
 		assert( array_key_exists( $player_key, $meeting['player_list'] ) );
 		$player = $meeting['player_list'][$player_key];
-		$html = '<div class="balitsa-flex-row balitsa-flex-wrap balitsa-flex-justify-between balitsa-root balitsa-leaf" style="border: thin solid;">' . "\n";
-		$html .= '<div class="balitsa-flex-row balitsa-flex-grow balitsa-flex-justify-start">' . "\n";
-		$html .= '<div class="balitsa-leaf">' . "\n";
+		$html = '<div class="balitsa-player">' . "\n";
+		$html .= '<div class="balitsa-player-left">' . "\n";
 		if ( is_null( $this->struct['meeting_key'] ) ) {
+			$html .= '<div class="balitsa-player-availability">' . "\n";
 			if ( $player['availability'] )
 				$html .= '<span class="fas fa-fw fa-check-double"></span>' . "\n";
 			else
 				$html .= '<span class="fas fa-fw fa-check"></span>' . "\n";
+			$html .= '</div><!-- .balitsa-player-availability -->' . "\n";
 		}
-		$html .= sprintf( '<span>%s</span>', esc_html( self::get_player_name( $player ) ) ) . "\n";
-		$html .= '</div>' . "\n";
-		$html .= '</div>' . "\n";
-		$html .= '<div class="balitsa-flex-row balitsa-flex-grow balitsa-flex-justify-end">' . "\n";
+		$html .= sprintf( '<span class="balitsa-player-name">%s</span>', esc_html( self::get_player_name( $player ) ) ) . "\n";
+		$html .= '</div><!-- .balitsa-player-left -->' . "\n";
+		$html .= '<div class="balitsa-player-right">' . "\n";
 		if ( !is_null( $this->struct['meeting_key'] ) ) {
 			$sport = Balitsa_Sports::select( $meeting['sport'] );
 			if ( !is_null( $sport ) ) {
@@ -570,9 +575,9 @@ final class Balitsa_Struct {
 					if ( !is_int( $value ) )
 						;
 					elseif ( $value <= self::LIMIT )
-						$html .= str_repeat( sprintf( '<div class="balitsa-leaf"><span class="%s"></span></div>', esc_attr( $stat['icon'] ) ) . "\n", $value );
+						$html .= str_repeat( sprintf( '<div class="balitsa-player-stat"><span class="%s"></span></div>', esc_attr( $stat['icon'] ) ) . "\n", $value );
 					else
-						$html .= sprintf( '<div class="balitsa-leaf"><span class="%s"></span>&times;%d</div>', esc_attr( $stat['icon'] ), $value ) . "\n";
+						$html .= sprintf( '<div class="balitsa-player-stat"><span class="%s"></span>&times;%d</div>', esc_attr( $stat['icon'] ), $value ) . "\n";
 				}
 			}
 			if ( $this->struct['readonly'] ) {
@@ -582,17 +587,17 @@ final class Balitsa_Struct {
 						$value++;
 				}
 				if ( $value <= self::LIMIT )
-					$html .= str_repeat( sprintf( '<div class="balitsa-leaf"><span class="%s"></span></div>', esc_attr( 'fas fa-fw fa-trophy' ) ) . "\n", $value );
+					$html .= str_repeat( sprintf( '<div class="balitsa-player-mvp"><span class="%s"></span></div>', esc_attr( 'fas fa-fw fa-trophy' ) ) . "\n", $value );
 				else
-					$html .= sprintf( '<div class="balitsa-leaf"><span class="%s"></span>&times;%d</div>', esc_attr( 'fas fa-fw fa-trophy' ), $value ) . "\n";
+					$html .= sprintf( '<div class="balitsa-player-mvp"><span class="%s"></span>&times;%d</div>', esc_attr( 'fas fa-fw fa-trophy' ), $value ) . "\n";
 			}
 		}
 		if ( $this->can_edit() && !$this->struct['readonly'] ) {
 			$html .= $this->frontend_player_update_link( $player_key, $meeting_key );
 			$html .= $this->frontend_player_delete_link( $player_key, $meeting_key );
 		}
-		$html .= '</div>' . "\n";
-		$html .= '</div>' . "\n";
+		$html .= '</div><!-- .balitsa-player-right -->' . "\n";
+		$html .= '</div><!-- .balitsa-player -->' . "\n";
 		return $html;
 	}
 
@@ -612,22 +617,26 @@ final class Balitsa_Struct {
 		$player = $meeting['player_list'][$player];
 		if ( !array_key_exists( 'stats', $player ) )
 			$player['stats'] = [];
-		$html = '<div class="balitsa-flex-col">' . "\n";
-		$html .= sprintf( '<div class="balitsa-leaf">%s</div>', esc_html__( 'Statistics', 'balitsa' ) ) . "\n";
+		$html = '<div class="balitsa-stat-panel">' . "\n";
+		$html .= '<div class="balitsa-stat-header">' . "\n";
+		$html .= '<span class="fas fa-fw fa-chart-bar"></span>' . "\n";
+		$html .= sprintf( '<span>%s</span>', esc_html__( 'Statistics', 'balitsa' ) ) . "\n";
+		$html .= '</div><!-- .balitsa-stat-header -->' . "\n";
+		$html .= '<div class="balitsa-stat-list">' . "\n";
 		foreach ( $sport['stats'] as $stat_key => $stat ) {
-			$html .= '<div class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
+			$html .= '<div class="balitsa-stat">' . "\n";
 			$value = array_key_exists( $stat_key, $player['stats'] ) ? $player['stats'][$stat_key] : NULL;
 			if ( is_null( $value ) )
 				$value = 0;
-			$html .= sprintf( '<div class="balitsa-leaf"><span class="%s"></span> %s: %s</div>', esc_attr( $stat['icon'] ), esc_html( $stat['name'] ), esc_html( $value ) ) . "\n";
-			$html .= '<div class="balitsa-flex-row">' . "\n";
+			$html .= sprintf( '<div class="balitsa-stat-left"><span class="%s"></span> %s: %s</div>', esc_attr( $stat['icon'] ), esc_html( $stat['name'] ), esc_html( $value ) ) . "\n";
+			$html .= '<div class="balitsa-stat-right">' . "\n";
 			if ( $value > 0 ) {
 				$html .= sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
 					'href' => $this->ajax_href( 'frontend_stat', [
 						'stat' => $stat_key,
 						'value' => $value - 1,
 					] ),
-					'class' => 'balitsa-link balitsa-leaf',
+					'class' => 'balitsa-link balitsa-button balitsa-stat-dec',
 				] ), esc_attr( 'fas fa-fw fa-minus' ), esc_html__( 'Decrease', 'balitsa' ) ) . "\n";
 			}
 			$html .= sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
@@ -635,13 +644,13 @@ final class Balitsa_Struct {
 					'stat' => $stat_key,
 					'value' => $value + 1,
 				] ),
-				'class' => 'balitsa-link balitsa-leaf',
+				'class' => 'balitsa-link balitsa-button balitsa-stat-inc',
 			] ), esc_attr( 'fas fa-fw fa-plus' ), esc_html__( 'Increase', 'balitsa' ) ) . "\n";
-			$html .= '</div>' . "\n";
-			$html .= '</div>' . "\n";
+			$html .= '</div><!-- .balitsa-stat-right -->' . "\n";
+			$html .= '</div><!-- .balitsa-stat -->' . "\n";
 		}
-		$html .= '</div>' . "\n";
-		$html .= '<hr class="balitsa-leaf" />' . "\n";
+		$html .= '</div><!-- .balitsa-stat-list -->' . "\n";
+		$html .= '</div><!-- .balitsa-stat-panel -->' . "\n";
 		return $html;
 	}
 
@@ -667,23 +676,22 @@ final class Balitsa_Struct {
 			}
 			if ( empty( $votes ) )
 				return '';
-			$html = '<div class="balitsa-flex-row balitsa-flex-wrap balitsa-flex-justify-between">' . "\n";
-			$html .= '<div class="balitsa-leaf">' . "\n";
+			$html = '<div class="balitsa-mvp-panel">' . "\n";
+			$html .= '<div class="balitsa-mvp-left">' . "\n";
 			$html .= '<span class="fas fa-fw fa-trophy"></span>' . "\n";
 			$html .= sprintf( '<span>%s</span>', esc_html__( 'MVP:', 'balitsa' ) ) . "\n";
-			$html .= '</div>' . "\n";
-			$html .= '<div class="balitsa-flex-row balitsa-flex-grow balitsa-flex-justify-end">' . "\n";
+			$html .= '</div><!-- .balitsa-mvp-left -->' . "\n";
+			$html .= '<div class="balitsa-mvp-right">' . "\n";
 			foreach ( $votes as $player => $vote ) {
 				if ( $vote < $votes_max )
 					continue;
 				$player = $player_list[$player];
 				$user = get_user_by( 'ID', $player['user'] );
 				$name = $user !== FALSE ? $user->display_name : $player['name'];
-				$html .= sprintf( '<span class="balitsa-leaf">%s</span>', esc_html( $name ) ) . "\n";
+				$html .= sprintf( '<span class="balitsa-mvp">%s</span>', esc_html( $name ) ) . "\n";
 			}
-			$html .= '</div>' . "\n";
-			$html .= '</div>' . "\n";
-			$html .= '<hr class="balitsa-leaf" />' . "\n";
+			$html .= '</div><!-- .balitsa-mvp-right -->' . "\n";
+			$html .= '</div><!-- .balitsa-mvp-panel -->' . "\n";
 			return $html;
 		}
 		$player_key = $this->get_user_key();
@@ -695,23 +703,13 @@ final class Balitsa_Struct {
 			$mvp = $player['mvp'];
 			$mvp = array_key_exists( $mvp, $meeting['player_list'] ) ? $meeting['player_list'][$mvp] : NULL;
 		}
-		$html = '<div class="balitsa-flex-col">' . "\n";
-		$html .= '<div class="balitsa-flex-row balitsa-flex-justify-between balitsa-flex-align-center">' . "\n";
-		$html .= '<div class="balitsa-leaf">' . "\n";
+		$html = '<div class="balitsa-mvpvote-panel">' . "\n";
+		$html .= '<div class="balitsa-mvpvote-header">' . "\n";
 		$html .= '<span class="fas fa-fw fa-person-booth"></span>' . "\n";
 		$html .= sprintf( '<span>%s</span>', esc_html__( 'MVP Vote:', 'balitsa' ) ) . "\n";
 		$html .= sprintf( '<span>%s</span>', !is_null( $mvp ) ? self::get_player_name( $mvp ) : '&mdash;' ) . "\n";
-		$html .= '</div>' . "\n";
-		$html .= '<div>' . "\n";
-		if ( !is_null( $mvp ) ) {
-			$html .= sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
-				'href' => $this->ajax_href( 'frontend_mvp' ),
-				'class' => 'balitsa-link balitsa-leaf',
-			] ), esc_attr( 'fas fa-fw fa-ban' ), esc_html__( 'Clear', 'balitsa' ) ) . "\n";
-		}
-		$html .= '</div>' . "\n";
-		$html .= '</div>' . "\n";
-		$html .= '<div class="balitsa-flex-row balitsa-flex-wrap balitsa-flex-align-center">' . "\n";
+		$html .= '</div><!-- .balitsa-mvpvote-header -->' . "\n";
+		$html .= '<div class="balitsa-mvpvote-list">' . "\n";
 		$player_list = $meeting['player_list'];
 		uasort( $player_list, Balitsa::sorter( 'turn', 'player_key' ) );
 		foreach ( $player_list as $p ) {
@@ -720,22 +718,24 @@ final class Balitsa_Struct {
 					'href' => $this->ajax_href( 'frontend_mvp', [
 						'player' => $p['player_key'],
 					] ),
-					'class' => 'balitsa-link balitsa-leaf',
+					'class' => 'balitsa-link balitsa-button balitsa-mvpvote-item',
 				] ), esc_html( self::get_player_name( $p ) ) ) . "\n";
 			} else {
-				$html .= sprintf( '<span>%s</span>', esc_html( self::get_player_name( $p ) ) ) . "\n";
+				$html .= sprintf( '<a%s>%s</a>', Balitsa::atts( [
+					'href' => $this->ajax_href( 'frontend_mvp' ),
+					'class' => 'balitsa-link balitsa-button balitsa-mvpvote-item',
+				] ), esc_html( self::get_player_name( $p ) ) ) . "\n";
 			}
 		}
-		$html .= '</div>' . "\n";
-		$html .= '</div>' . "\n";
-		$html .= '<hr class="balitsa-leaf" />' . "\n";
+		$html .= '</div><!-- .balitsa-mvpvote-list -->' . "\n";
+		$html .= '</div><!-- .balitsa-mvpvote-panel -->' . "\n";
 		return $html;
 	}
 
 	private function frontend_refresh_link(): string {
 		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_refresh' ),
-			'class' => 'balitsa-link balitsa-leaf',
+			'class' => 'balitsa-link balitsa-button',
 		] ), esc_attr( 'fas fa-fw fa-sync-alt' ), esc_html__( 'Refresh', 'balitsa' ) ) . "\n";
 	}
 
@@ -744,28 +744,28 @@ final class Balitsa_Struct {
 			'href' => $this->ajax_href( 'frontend_meeting_select', [
 				'meeting' => $meeting_key,
 			] ),
-			'class' => 'balitsa-link balitsa-leaf',
+			'class' => 'balitsa-link balitsa-button',
 		] ), esc_attr( 'fas fa-fw fa-step-forward' ), esc_html__( 'Select', 'balitsa' ) ) . "\n";
 	}
 
 	private function frontend_meeting_unselect_link(): string {
 		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_meeting_unselect' ),
-			'class' => 'balitsa-link balitsa-leaf',
+			'class' => 'balitsa-link balitsa-button',
 		] ), esc_attr( 'fas fa-fw fa-step-backward' ), esc_html__( 'Unselect', 'balitsa' ) ) . "\n";
 	}
 
 	private function frontend_meeting_shuffle_link(): string {
 		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_meeting_shuffle' ),
-			'class' => 'balitsa-link balitsa-leaf',
+			'class' => 'balitsa-link balitsa-button',
 		] ),  esc_attr( 'fas fa-fw fa-random' ), esc_html__( 'Shuffle', 'balitsa' ) ) . "\n";
 	}
 
 	private function frontend_meeting_split_link(): string {
 		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_meeting_split' ),
-			'class' => 'balitsa-link balitsa-leaf',
+			'class' => 'balitsa-link balitsa-button',
 		] ), esc_attr( 'fas fa-fw fa-columns' ), esc_html__( 'Split', 'balitsa' ) ) . "\n";
 	}
 
@@ -781,7 +781,7 @@ final class Balitsa_Struct {
 			'href' => $this->ajax_href( 'frontend_player_insert', [
 				'meeting' => $meeting_key,
 			] ),
-			'class' => 'balitsa-insert balitsa-leaf',
+			'class' => 'balitsa-insert balitsa-button',
 			'data-balitsa-form' => '.balitsa-form-player',
 			'data-balitsa-field-availability' => esc_attr( 'on' ),
 		] ), esc_attr( 'fas fa-fw fa-user-plus' ), esc_html__( 'Insert', 'balitsa' ) ) . "\n";
@@ -799,7 +799,7 @@ final class Balitsa_Struct {
 				'player' => $player_key,
 			] ),
 			'title' => esc_attr__( 'Update', 'balitsa' ),
-			'class' => 'balitsa-insert balitsa-leaf',
+			'class' => 'balitsa-insert balitsa-player-update',
 			'data-balitsa-form' => '.balitsa-form-player',
 			'data-balitsa-field-user' => esc_attr( $player['user'] ),
 			'data-balitsa-field-name' => esc_attr( $player['name'] ),
@@ -822,7 +822,7 @@ final class Balitsa_Struct {
 				'player' => $player_key,
 			] ),
 			'title' => esc_attr__( 'Delete', 'balitsa' ),
-			'class' => 'balitsa-link balitsa-leaf',
+			'class' => 'balitsa-link balitsa-player-delete',
 			'data-balitsa-confirm' => esc_attr( sprintf( __( 'Delete %s?', 'balitsa' ), self::get_player_name( $player ) ) ),
 		] ), esc_attr( 'fas fa-fw fa-user-minus' ) ) . "\n";
 	}
@@ -1231,8 +1231,7 @@ add_filter( 'the_content', function( string $content ): string {
 } );
 
 add_action( 'wp_enqueue_scripts', function(): void {
-	wp_enqueue_style( 'balitsa-flex', Balitsa::url( 'flex.css' ), [], Balitsa::version() );
-	wp_enqueue_style( 'balitsa-tree', Balitsa::url( 'tree.css' ), [], Balitsa::version() );
+	wp_enqueue_style( 'balitsa-style', Balitsa::url( 'style.css' ), [], Balitsa::version() );
 	wp_enqueue_script( 'balitsa-script', Balitsa::url( 'script.js' ), [ 'jquery' ], Balitsa::version() );
 } );
 

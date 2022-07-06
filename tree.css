@@ -1,8 +1,8 @@
 .balitsa-root {
-	padding: 8px;
+	padding: 4px;
 }
 .balitsa-root .balitsa-leaf {
-	margin: 8px;
+	margin: 4px;
 }
 .balitsa-root-border {
 	border: thin solid #c3c4c7;

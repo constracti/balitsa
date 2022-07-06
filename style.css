@@ -1,0 +1,297 @@
+.balitsa-button {
+	display: inline-block;
+	border-radius: 4px;
+	padding: 4px 8px;
+	text-decoration: none;
+}
+
+a.balitsa-button {
+	color: #fff;
+	background-color: #265728;
+}
+
+a.balitsa-button:hover {
+	color: #000;
+	background-color: #ccc;
+}
+
+.balitsa-meeting-list {
+	display: flex;
+	flex-direction: column;
+}
+
+.balitsa-header {
+	margin: 8px 0px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.balitsa-header-left {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.balitsa-header-right {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+.balitsa-header-left>*,
+.balitsa-header-right>* {
+	margin: 4px;
+}
+
+.balitsa-declaration {
+	margin: 8px 0px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	padding: 4px;
+	color: #fff;
+	background-color: #4caf50;
+}
+
+.balitsa-declaration-choices {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.balitsa-declaration-choices>* {
+	margin: 4px;
+}
+
+.balitsa-declaration-players {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.balitsa-team-list {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: 0px -8px;
+}
+
+.balitsa-team {
+	margin: 8px;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	padding: 4px;
+	color: #fff;
+	background-color: #4caf50;
+}
+
+.balitsa-player {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	border-radius: 4px;
+	margin: 4px;
+	padding: 2px;
+	color: #000;
+	background-color: #f4faf4;
+}
+
+.balitsa-player-left {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.balitsa-player-right {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+.balitsa-player-left>*,
+.balitsa-player-right>* {
+	margin: 2px;
+}
+
+.balitsa-stat-panel {
+	margin: 8px 0px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	padding: 4px;
+	color: #fff;
+	background-color: #4caf50;
+}
+
+.balitsa-stat-header {
+	margin: 4px;
+}
+
+.balitsa-stat-list {
+	margin: 4px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.balitsa-stat {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 2px;
+}
+
+.balitsa-stat:nth-child(odd) {
+	color: #000;
+	background-color: #f4faf4;
+}
+
+.balitsa-stat:nth-child(even) {
+	color: #000;
+	background-color: #dbefdc;
+}
+
+.balitsa-stat-right {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+.balitsa-stat-left,
+.balitsa-stat-right>* {
+	margin: 2px;
+}
+
+.balitsa-mvp-panel {
+	margin: 8px 0px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	padding: 4px;
+}
+
+.balitsa-mvp-left {
+	margin: 4px;
+}
+
+.balitsa-mvp-right {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+}
+
+.balitsa-mvp {
+	margin: 4px;
+}
+
+.balitsa-mvpvote-panel {
+	margin: 8px 0px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	padding: 4px;
+	color: #fff;
+	background-color: #4caf50;
+}
+
+.balitsa-mvpvote-header {
+	margin: 4px;
+}
+
+.balitsa-mvpvote-list {
+	margin: 4px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	border-radius: 4px;
+	overflow: hidden;
+	padding: 2px;
+	color: #000;
+	background-color: #f4faf4;
+}
+
+.balitsa-mvpvote-item {
+	margin: 2px;
+}
+
+.balitsa-meeting-actions {
+	margin: 8px 0px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.balitsa-form-player {
+	margin: 8px 0px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	padding: 4px;
+	color: #fff;
+	background-color: #4caf50;
+}
+
+.balitsa-form-player-fields {
+	margin: 4px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.balitsa-form-player-fields>label {
+	display: flex;
+	flex-direction; row;
+	justify-content: space-between;
+	padding: 2px;
+}
+
+.balitsa-form-player-fields>label:nth-child(odd) {
+	color: #000;
+	background-color: #f4faf4;
+}
+
+.balitsa-form-player-fields>label:nth-child(even) {
+	color: #000;
+	background-color: #dbefdc;
+}
+
+.balitsa-form-player-fields>label>* {
+	margin: 2px;
+}
+
+.balitsa-form-player-footer {
+	display: flex;
+	flex-direction; row;
+	justify-content: space-between;
+}
+
+.balitsa-form-player-footer>* {
+	margin: 4px;
+}
+
+.balitsa-sep {
+	margin: 8px 0px;
+}
+
+.balitsa-footer {
+	margin: 8px 0px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
