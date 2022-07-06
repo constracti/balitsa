@@ -715,7 +715,7 @@ final class Balitsa_Struct {
 		$player_list = $meeting['player_list'];
 		uasort( $player_list, Balitsa::sorter( 'turn', 'player_key' ) );
 		foreach ( $player_list as $p ) {
-			if ( $p['player_key'] !== $mvp['player_key'] ) {
+			if ( is_null( $mvp ) || $p['player_key'] !== $mvp['player_key'] ) {
 				$html .= sprintf( '<a%s>%s</a>', Balitsa::atts( [
 					'href' => $this->ajax_href( 'frontend_mvp', [
 						'player' => $p['player_key'],

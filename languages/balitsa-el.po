@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Balitsa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-28 19:42+0000\n"
-"PO-Revision-Date: 2022-01-20 11:38+0000\n"
+"PO-Revision-Date: 2022-07-06 16:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: Ελληνικά\n"
 "Language: el\n"
@@ -15,33 +15,32 @@ msgstr ""
 "X-Loco-Version: 2.5.5; wp-5.8.2\n"
 "X-Domain: balitsa"
 
-#: access.php:110
+#: access.php:152
 msgid "Accept"
 msgstr "Αποδοχή"
 
-#: access.php:121
+#: access.php:99
 msgid "Action"
 msgstr "Ενέργεια"
 
-#: frontend.php:105
+#: struct.php:431
 msgid "Availability"
 msgstr "Διαθεσιμότητα"
 
 #. Name of the plugin
-#: index.php:33 index.php:34 index.php:41 metabox.php:351
+#: struct.php:1214 index.php:33 index.php:34 index.php:41
 msgid "Balitsa"
 msgstr "Μπαλίτσα"
 
-#: frontend.php:114 settings.php:171 settings.php:200 metabox.php:301
-#: access.php:164
+#: struct.php:285 struct.php:440 sports.php:149 sports.php:178 access.php:134
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: frontend.php:408
+#: struct.php:710
 msgid "Clear"
 msgstr "Καθαρισμός"
 
-#: metabox.php:230
+#: struct.php:218
 msgid "Clone"
 msgstr "Αντιγραφή"
 
@@ -49,7 +48,7 @@ msgstr "Αντιγραφή"
 msgid "constracti"
 msgstr "constracti"
 
-#: metabox.php:170
+#: struct.php:161
 msgid "Construct"
 msgstr "Δημιουργία"
 
@@ -57,50 +56,50 @@ msgstr "Δημιουργία"
 msgid "Customization plugin of Balitsa website."
 msgstr "Πρόσθετο προσαρμογών του ιστοτόπου Μπαλίτσα."
 
-#: metabox.php:160
+#: struct.php:167
 msgid "Danger Zone"
 msgstr "Επικίνδυνη Ζώνη"
 
-#: metabox.php:284
+#: struct.php:268
 msgid "Datetime"
 msgstr "Η/Ω"
 
-#: frontend.php:338
+#: struct.php:631
 msgid "Decrease"
 msgstr "Μείωση"
 
-#: frontend.php:206 settings.php:102 settings.php:137 metabox.php:253
+#: struct.php:236 struct.php:824 sports.php:219 sports.php:239
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: frontend.php:208
+#: struct.php:826
 #, php-format
 msgid "Delete %s?"
 msgstr "Διαγραφή %s;"
 
-#: settings.php:101
+#: sports.php:218
 #, php-format
 msgid "Delete sport %s?"
 msgstr "Διαγραφή αθλήματος %s;"
 
-#: settings.php:138
+#: sports.php:240
 #, php-format
 msgid "Delete statistic %s?"
 msgstr "Διαγραφή στατιστικού %s;"
 
-#: metabox.php:252
+#: struct.php:235
 msgid "Delete?"
 msgstr "Διαγραφή;"
 
-#: metabox.php:180
+#: struct.php:173
 msgid "Destruct"
 msgstr "Καταστροφή"
 
-#: metabox.php:179
+#: struct.php:172
 msgid "Destruct?"
 msgstr "Καταστροφή;"
 
-#: access.php:120
+#: access.php:98
 msgid "Display Name"
 msgstr "Ψευδώνυμο"
 
@@ -112,147 +111,146 @@ msgstr "https://github.com/constracti"
 msgid "https://github.com/constracti/balitsa"
 msgstr "https://github.com/constracti/balitsa"
 
-#: settings.php:163 settings.php:192
+#: sports.php:141 sports.php:170
 msgid "Icon"
 msgstr "Εικονίδιο"
 
-#: frontend.php:348
+#: struct.php:639
 msgid "Increase"
 msgstr "Αύξηση"
 
-#: frontend.php:134 settings.php:52 metabox.php:198
+#: struct.php:191 struct.php:787 sports.php:196
 msgid "Insert"
 msgstr "Προσθήκη"
 
-#: settings.php:111
+#: sports.php:229
 msgid "Insert Statistic"
 msgstr "Εισαγωγή Στατιστικού"
 
-#: access.php:176
+#: access.php:208
 msgid "Invite Users"
 msgstr "Πρόσκληση Χρηστών"
 
-#: settings.php:67 settings.php:155 settings.php:184
+#: sports.php:84 sports.php:133 sports.php:162
 msgid "Key"
 msgstr "Κλειδί"
 
-#: metabox.php:337
+#: struct.php:307
 msgid "Lock"
 msgstr "Κλείδωμα"
 
-#: metabox.php:313
+#: struct.php:297
 msgid "Locked"
 msgstr "Κλειδωμένο"
 
-#: metabox.php:209
+#: struct.php:201
 msgid "Meetings"
 msgstr "Συναντήσεις"
 
-#: frontend.php:398
-msgid "MVP"
-msgstr "MVP"
+#: struct.php:702
+msgid "MVP Vote:"
+msgstr "Ψήφος MVP:"
 
-#: frontend.php:376
+#: struct.php:673
 msgid "MVP:"
 msgstr "MVP:"
 
-#: frontend.php:81 settings.php:66 settings.php:159 settings.php:188
+#: struct.php:407 sports.php:83 sports.php:137 sports.php:166
 msgid "Name"
 msgstr "Όνομα"
 
-#: frontend.php:234
+#: struct.php:469
 msgid "No"
 msgstr "Όχι"
 
-#: frontend.php:86
+#: struct.php:412 ranks.php:135
 msgid "Rank"
 msgstr "Βαθμός"
 
-#: frontend.php:551 settings.php:36 metabox.php:151 access.php:94
+#: struct.php:150 struct.php:739 ranks.php:79 sports.php:188 access.php:144
 msgid "Refresh"
 msgstr "Ανανέωση"
 
-#: access.php:139
+#: access.php:161
 msgid "Reject"
 msgstr "Απόρριψη"
 
-#: frontend.php:474
+#: struct.php:748
 msgid "Select"
 msgstr "Επιλογή"
 
-#: index.php:69 settings.php:7
+#: index.php:69 sports.php:341
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
-#: frontend.php:526
+#: struct.php:762
 msgid "Shuffle"
 msgstr "Ανάμιξη"
 
-#: frontend.php:535
+#: struct.php:769
 msgid "Split"
 msgstr "Χωρισμός"
 
-#: settings.php:150 metabox.php:288
+#: struct.php:272 sports.php:128
 msgid "Sport"
 msgstr "Άθλημα"
 
-#: settings.php:44
+#: sports.php:68
 msgid "Sports"
 msgstr "Αθλήματα"
 
-#: settings.php:179
+#: sports.php:157
 msgid "Statistic"
 msgstr "Στατιστικό"
 
-#: frontend.php:320 settings.php:68
+#: struct.php:616 sports.php:85
 msgid "Statistics"
 msgstr "Στατιστικά"
 
-#: metabox.php:308
+#: struct.php:292
 msgid "Status"
 msgstr "Κατάσταση"
 
-#: frontend.php:113 settings.php:170 settings.php:199 metabox.php:300
-#: access.php:163
+#: struct.php:284 struct.php:439 sports.php:148 sports.php:177 access.php:133
 msgid "Submit"
 msgstr "Υποβολή"
 
-#: frontend.php:95
+#: struct.php:421
 msgid "Team"
 msgstr "Ομάδα"
 
-#: metabox.php:296
+#: struct.php:280
 msgid "Teams"
 msgstr "Ομάδες"
 
-#: frontend.php:100
+#: struct.php:426
 msgid "Turn"
 msgstr "Σειρά"
 
-#: metabox.php:328
+#: struct.php:307
 msgid "Unlock"
 msgstr "Ξεκλείδωμα"
 
-#: metabox.php:316
+#: struct.php:300
 msgid "Unlocked"
 msgstr "Ξεκλείδωτο"
 
-#: frontend.php:517
+#: struct.php:755
 msgid "Unselect"
 msgstr "Αποεπιλογή"
 
-#: frontend.php:187 settings.php:93 metabox.php:243
+#: struct.php:228 struct.php:801 sports.php:209
 msgid "Update"
 msgstr "Ενημέρωση"
 
-#: frontend.php:68 access.php:152
+#: struct.php:394 access.php:122
 msgid "User"
 msgstr "Χρήστης"
 
-#: frontend.php:107 frontend.php:222
+#: struct.php:433 struct.php:457
 msgid "Yes"
 msgstr "Ναι"
 
-#: frontend.php:108 frontend.php:228
+#: struct.php:434 struct.php:463
 msgid "Yes, if need be"
 msgstr "Ναι, αν πρέπει"
