@@ -1,40 +1,28 @@
-/* TODO prefix name with unique string */
-
-.flex-row {
+.balitsa-flex-row {
 	display: flex;
 }
-.flex-col {
+.balitsa-flex-col {
 	display: flex;
 	flex-direction: column;
 }
-.flex-wrap {
+.balitsa-flex-wrap {
 	flex-wrap: wrap;
 }
-.flex-justify-start {
+.balitsa-flex-justify-start {
 	justify-content: start;
 }
-.flex-justify-between {
+.balitsa-flex-justify-between {
 	justify-content: space-between;
 }
-.flex-justify-end {
+.balitsa-flex-justify-end {
 	justify-content: end;
 }
-.flex-align-center {
+.balitsa-flex-align-center {
 	align-items: center;
 }
-.flex-grow {
+.balitsa-flex-grow {
 	flex-grow: 1;
 }
-.flex-noshrink {
+.balitsa-flex-noshrink {
 	flex-shrink: 0;
-}
-
-.root {
-	padding: 2px 4px;
-}
-.root .leaf {
-	margin: 2px 4px;
-}
-.root-border {
-	border: thin solid #c3c4c7;
 }

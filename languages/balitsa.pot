@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Balitsa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-03 19:14+0000\n"
+"POT-Creation-Date: 2022-01-20 11:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,37 +16,33 @@ msgstr ""
 "X-Loco-Version: 2.5.5; wp-5.8.2\n"
 "X-Domain: balitsa"
 
-#: metabox.php:75
+#: access.php:110
 msgid "Accept"
 msgstr ""
 
-#: metabox.php:40
-msgid "Access Permissions"
-msgstr ""
-
-#: metabox.php:82
+#: access.php:121
 msgid "Action"
 msgstr ""
 
-#: frontend.php:125
+#: frontend.php:105
 msgid "Availability"
 msgstr ""
 
 #. Name of the plugin
-#: index.php:70 index.php:71
+#: index.php:33 index.php:34 index.php:41 metabox.php:351
 msgid "Balitsa"
 msgstr ""
 
-#: frontend.php:134 settings.php:154 settings.php:179 metabox.php:132
-#: metabox.php:248
+#: frontend.php:114 settings.php:171 settings.php:200 metabox.php:301
+#: access.php:164
 msgid "Cancel"
 msgstr ""
 
-#: frontend.php:428
+#: frontend.php:408
 msgid "Clear"
 msgstr ""
 
-#: metabox.php:182
+#: metabox.php:230
 msgid "Clone"
 msgstr ""
 
@@ -54,7 +50,7 @@ msgstr ""
 msgid "constracti"
 msgstr ""
 
-#: metabox.php:37
+#: metabox.php:170
 msgid "Construct"
 msgstr ""
 
@@ -62,194 +58,202 @@ msgstr ""
 msgid "Customization plugin of Balitsa website."
 msgstr ""
 
-#: metabox.php:255
+#: metabox.php:160
 msgid "Danger Zone"
 msgstr ""
 
-#: metabox.php:156 metabox.php:226
+#: metabox.php:284
 msgid "Datetime"
 msgstr ""
 
-#: frontend.php:358
+#: frontend.php:338
 msgid "Decrease"
 msgstr ""
 
-#: frontend.php:226 settings.php:76 settings.php:115 metabox.php:205
+#: frontend.php:206 settings.php:102 settings.php:137 metabox.php:253
 msgid "Delete"
 msgstr ""
 
-#: frontend.php:228
+#: frontend.php:208
 #, php-format
 msgid "Delete %s?"
 msgstr ""
 
-#: settings.php:75
+#: settings.php:101
 #, php-format
 msgid "Delete sport %s?"
 msgstr ""
 
-#: settings.php:116
+#: settings.php:138
 #, php-format
 msgid "Delete statistic %s?"
 msgstr ""
 
-#: metabox.php:204
+#: metabox.php:252
 msgid "Delete?"
 msgstr ""
 
-#: metabox.php:266
+#: metabox.php:180
 msgid "Destruct"
 msgstr ""
 
-#: metabox.php:265
+#: metabox.php:179
 msgid "Destruct?"
 msgstr ""
 
-#: metabox.php:81
+#: access.php:120
 msgid "Display Name"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://github.com/constracti"
 msgstr ""
 
 #. URI of the plugin
 msgid "https://github.com/constracti/balitsa"
 msgstr ""
 
-#: settings.php:146 settings.php:171
+#: settings.php:163 settings.php:192
 msgid "Icon"
 msgstr ""
 
-#: frontend.php:368
+#: frontend.php:348
 msgid "Increase"
 msgstr ""
 
-#: frontend.php:154 settings.php:40 metabox.php:150
+#: frontend.php:134 settings.php:52 metabox.php:198
 msgid "Insert"
 msgstr ""
 
-#: settings.php:85
+#: settings.php:111
 msgid "Insert Statistic"
 msgstr ""
 
-#: metabox.php:74
+#: access.php:176
 msgid "Invite Users"
 msgstr ""
 
-#: settings.php:48 settings.php:138 settings.php:163
+#: settings.php:67 settings.php:155 settings.php:184
 msgid "Key"
 msgstr ""
 
-#: metabox.php:57
+#: metabox.php:337
 msgid "Lock"
 msgstr ""
 
-#: metabox.php:44
+#: metabox.php:313
 msgid "Locked"
 msgstr ""
 
-#: metabox.php:149
-msgid "Meeting List"
+#: metabox.php:209
+msgid "Meetings"
 msgstr ""
 
-#: frontend.php:418
+#: frontend.php:398
 msgid "MVP"
 msgstr ""
 
-#: frontend.php:396
+#: frontend.php:376
 msgid "MVP:"
 msgstr ""
 
-#: frontend.php:101 settings.php:47 settings.php:142 settings.php:167
+#: frontend.php:81 settings.php:66 settings.php:159 settings.php:188
 msgid "Name"
 msgstr ""
 
-#: frontend.php:254
+#: frontend.php:234
 msgid "No"
 msgstr ""
 
-#: frontend.php:106
+#: frontend.php:86
 msgid "Rank"
 msgstr ""
 
-#: frontend.php:571 settings.php:25 metabox.php:23
+#: frontend.php:551 settings.php:36 metabox.php:151 access.php:94
 msgid "Refresh"
 msgstr ""
 
-#: metabox.php:102
+#: access.php:139
 msgid "Reject"
 msgstr ""
 
-#: frontend.php:494
+#: frontend.php:474
 msgid "Select"
 msgstr ""
 
-#: index.php:107 settings.php:7
+#: index.php:69 settings.php:7
 msgid "Settings"
 msgstr ""
 
-#: frontend.php:546
+#: frontend.php:526
 msgid "Shuffle"
 msgstr ""
 
-#: frontend.php:555
+#: frontend.php:535
 msgid "Split"
 msgstr ""
 
-#: settings.php:133 metabox.php:157 metabox.php:230
+#: settings.php:150 metabox.php:288
 msgid "Sport"
 msgstr ""
 
-#: settings.php:31
+#: settings.php:44
 msgid "Sports"
 msgstr ""
 
-#: settings.php:158
+#: settings.php:179
 msgid "Statistic"
 msgstr ""
 
-#: frontend.php:340 settings.php:49
+#: frontend.php:320 settings.php:68
 msgid "Statistics"
 msgstr ""
 
-#: frontend.php:133 settings.php:153 settings.php:178 metabox.php:131
-#: metabox.php:247
+#: metabox.php:308
+msgid "Status"
+msgstr ""
+
+#: frontend.php:113 settings.php:170 settings.php:199 metabox.php:300
+#: access.php:163
 msgid "Submit"
 msgstr ""
 
-#: frontend.php:115
+#: frontend.php:95
 msgid "Team"
 msgstr ""
 
-#: metabox.php:158 metabox.php:243
+#: metabox.php:296
 msgid "Teams"
 msgstr ""
 
-#: frontend.php:120
+#: frontend.php:100
 msgid "Turn"
 msgstr ""
 
-#: metabox.php:57
+#: metabox.php:328
 msgid "Unlock"
 msgstr ""
 
-#: metabox.php:44
+#: metabox.php:316
 msgid "Unlocked"
 msgstr ""
 
-#: frontend.php:537
+#: frontend.php:517
 msgid "Unselect"
 msgstr ""
 
-#: frontend.php:207 settings.php:67 metabox.php:195
+#: frontend.php:187 settings.php:93 metabox.php:243
 msgid "Update"
 msgstr ""
 
-#: frontend.php:88 metabox.php:116
+#: frontend.php:68 access.php:152
 msgid "User"
 msgstr ""
 
-#: frontend.php:127 frontend.php:242
+#: frontend.php:107 frontend.php:222
 msgid "Yes"
 msgstr ""
 
-#: frontend.php:128 frontend.php:248
+#: frontend.php:108 frontend.php:228
 msgid "Yes, if need be"
 msgstr ""
