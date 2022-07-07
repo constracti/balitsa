@@ -334,7 +334,10 @@ final class Balitsa_Struct {
 			$html .= $this->frontend_header_tag();
 			$html .= $this->frontend_teams_section();
 			$html .= $this->frontend_statistics_section();
-			$html .= $this->frontend_mvp_section();
+			if ( $this->struct['readonly'] )
+				$html .= $this->frontend_mvp_section();
+			else
+				$html .= $this->frontend_mvpvote_section();
 			if ( $this->can_edit() && !$this->struct['readonly'] ) {
 				$html .= '<div class="balitsa-meeting-actions">' . "\n";
 				$html .= $this->frontend_meeting_unselect_link();
@@ -484,9 +487,10 @@ final class Balitsa_Struct {
 		}
 		$html = '<div class="balitsa-declaration-choices">' . "\n";
 		foreach ( $availability_list as $availability => $a ) {
-			$icon = sprintf( '<span class="%s"></span> %s', esc_attr( $a['icon'] ), esc_html( $a['text'] ) );
+			$icon = sprintf( '<span class="%s"></span>', esc_attr( $a['icon'] ) );
+			$title = $a['text'];
 			if ( !is_null( $a['count'] ) )
-				$icon .= sprintf( ' (%d)', $a['count'] );
+				$title .= sprintf( ' (%d)', $a['count'] );
 			if ( $a['is_link'] ) {
 				$html .= sprintf( '<a%s>%s</a>', Balitsa::atts( [
 					'href' => $this->ajax_href( 'frontend_declare', [
@@ -494,9 +498,10 @@ final class Balitsa_Struct {
 						'availability' => $availability,
 					] ),
 					'class' => 'balitsa-link balitsa-button',
+					'title' => esc_attr( $title ),
 				] ), $icon ) . "\n";
 			} else {
-				$html .= sprintf( '<span class="balitsa-button">%s</span>', $icon ) . "\n";
+				$html .= sprintf( '<span class="balitsa-button">%s <span>%s</span></span>', $icon, esc_html( $title ) ) . "\n";
 			}
 		}
 		$html .= '</div><!-- .balitsa-declaration-choices -->' . "\n";
@@ -631,21 +636,23 @@ final class Balitsa_Struct {
 			$html .= sprintf( '<div class="balitsa-stat-left"><span class="%s"></span> %s: %s</div>', esc_attr( $stat['icon'] ), esc_html( $stat['name'] ), esc_html( $value ) ) . "\n";
 			$html .= '<div class="balitsa-stat-right">' . "\n";
 			if ( $value > 0 ) {
-				$html .= sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
+				$html .= sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 					'href' => $this->ajax_href( 'frontend_stat', [
 						'stat' => $stat_key,
 						'value' => $value - 1,
 					] ),
 					'class' => 'balitsa-link balitsa-button balitsa-stat-dec',
-				] ), esc_attr( 'fas fa-fw fa-minus' ), esc_html__( 'Decrease', 'balitsa' ) ) . "\n";
+					'title' => esc_attr__( 'Decrease', 'balitsa' ),
+				] ), esc_attr( 'fas fa-fw fa-minus' ) ) . "\n";
 			}
-			$html .= sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
+			$html .= sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 				'href' => $this->ajax_href( 'frontend_stat', [
 					'stat' => $stat_key,
 					'value' => $value + 1,
 				] ),
 				'class' => 'balitsa-link balitsa-button balitsa-stat-inc',
-			] ), esc_attr( 'fas fa-fw fa-plus' ), esc_html__( 'Increase', 'balitsa' ) ) . "\n";
+				'title' => esc_attr__( 'Increase', 'balitsa' ),
+			] ), esc_attr( 'fas fa-fw fa-plus' ) ) . "\n";
 			$html .= '</div><!-- .balitsa-stat-right -->' . "\n";
 			$html .= '</div><!-- .balitsa-stat -->' . "\n";
 		}
@@ -659,41 +666,48 @@ final class Balitsa_Struct {
 		assert( !is_null( $this->struct['meeting_key'] ) );
 		$meeting_key = $this->struct['meeting_key'];
 		$meeting = $this->struct['meeting_list'][$meeting_key];
-		if ( $this->struct['readonly'] ) {
-			$votes = [];
-			$votes_max = 0;
-			$player_list = $meeting['player_list'];
-			uasort( $player_list, Balitsa::sorter( 'turn', 'player_key' ) );
-			foreach ( $player_list as $player ) {
-				if ( !array_key_exists( 'mvp', $player ) || !array_key_exists( $player['mvp'], $meeting['player_list'] ) )
-					continue;
-				$mvp = $player['mvp'];
-				if ( !array_key_exists( $mvp, $votes ) )
-					$votes[$mvp] = 0;
-				$votes[$mvp]++;
-				if ( $votes[$mvp] > $votes_max )
-					$votes_max = $votes[$mvp];
-			}
-			if ( empty( $votes ) )
-				return '';
-			$html = '<div class="balitsa-mvp-panel">' . "\n";
-			$html .= '<div class="balitsa-mvp-left">' . "\n";
-			$html .= '<span class="fas fa-fw fa-trophy"></span>' . "\n";
-			$html .= sprintf( '<span>%s</span>', esc_html__( 'MVP:', 'balitsa' ) ) . "\n";
-			$html .= '</div><!-- .balitsa-mvp-left -->' . "\n";
-			$html .= '<div class="balitsa-mvp-right">' . "\n";
-			foreach ( $votes as $player => $vote ) {
-				if ( $vote < $votes_max )
-					continue;
-				$player = $player_list[$player];
-				$user = get_user_by( 'ID', $player['user'] );
-				$name = $user !== FALSE ? $user->display_name : $player['name'];
-				$html .= sprintf( '<span class="balitsa-mvp">%s</span>', esc_html( $name ) ) . "\n";
-			}
-			$html .= '</div><!-- .balitsa-mvp-right -->' . "\n";
-			$html .= '</div><!-- .balitsa-mvp-panel -->' . "\n";
-			return $html;
+		assert( $this->struct['readonly'] );
+		$votes = [];
+		$votes_max = 0;
+		$player_list = $meeting['player_list'];
+		uasort( $player_list, Balitsa::sorter( 'turn', 'player_key' ) );
+		foreach ( $player_list as $player ) {
+			if ( !array_key_exists( 'mvp', $player ) || !array_key_exists( $player['mvp'], $meeting['player_list'] ) )
+				continue;
+			$mvp = $player['mvp'];
+			if ( !array_key_exists( $mvp, $votes ) )
+				$votes[$mvp] = 0;
+			$votes[$mvp]++;
+			if ( $votes[$mvp] > $votes_max )
+				$votes_max = $votes[$mvp];
 		}
+		if ( empty( $votes ) )
+			return '';
+		$html = '<div class="balitsa-mvp-panel">' . "\n";
+		$html .= '<div class="balitsa-mvp-left">' . "\n";
+		$html .= '<span class="fas fa-fw fa-trophy"></span>' . "\n";
+		$html .= sprintf( '<span>%s</span>', esc_html__( 'MVP:', 'balitsa' ) ) . "\n";
+		$html .= '</div><!-- .balitsa-mvp-left -->' . "\n";
+		$html .= '<div class="balitsa-mvp-right">' . "\n";
+		foreach ( $votes as $player => $vote ) {
+			if ( $vote < $votes_max )
+				continue;
+			$player = $player_list[$player];
+			$user = get_user_by( 'ID', $player['user'] );
+			$name = $user !== FALSE ? $user->display_name : $player['name'];
+			$html .= sprintf( '<span class="balitsa-mvp">%s</span>', esc_html( $name ) ) . "\n";
+		}
+		$html .= '</div><!-- .balitsa-mvp-right -->' . "\n";
+		$html .= '</div><!-- .balitsa-mvp-panel -->' . "\n";
+		return $html;
+	}
+
+	private function frontend_mvpvote_section(): string {
+		assert( !is_null( $this->struct ) );
+		assert( !is_null( $this->struct['meeting_key'] ) );
+		$meeting_key = $this->struct['meeting_key'];
+		$meeting = $this->struct['meeting_list'][$meeting_key];
+		assert( !$this->struct['readonly'] );
 		$player_key = $this->get_user_key();
 		if ( is_null( $player_key ) )
 			return '';
@@ -705,9 +719,13 @@ final class Balitsa_Struct {
 		}
 		$html = '<div class="balitsa-mvpvote-panel">' . "\n";
 		$html .= '<div class="balitsa-mvpvote-header">' . "\n";
+		$html .= '<div class="balitsa-mvpvote-header-left">' . "\n";
 		$html .= '<span class="fas fa-fw fa-person-booth"></span>' . "\n";
 		$html .= sprintf( '<span>%s</span>', esc_html__( 'MVP Vote:', 'balitsa' ) ) . "\n";
+		$html .= '</div><!-- .balitsa-mvpvote-header-left -->' . "\n";
+		$html .= '<div class="balitsa-mvpvote-header-right">' . "\n";
 		$html .= sprintf( '<span>%s</span>', !is_null( $mvp ) ? self::get_player_name( $mvp ) : '&mdash;' ) . "\n";
+		$html .= '</div><!-- .balitsa-mvpvote-header-right -->' . "\n";
 		$html .= '</div><!-- .balitsa-mvpvote-header -->' . "\n";
 		$html .= '<div class="balitsa-mvpvote-list">' . "\n";
 		$player_list = $meeting['player_list'];
@@ -740,33 +758,37 @@ final class Balitsa_Struct {
 	}
 
 	private function frontend_meeting_select_link( int $meeting_key ): string {
-		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
+		return sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_meeting_select', [
 				'meeting' => $meeting_key,
 			] ),
 			'class' => 'balitsa-link balitsa-button',
-		] ), esc_attr( 'fas fa-fw fa-step-forward' ), esc_html__( 'Select', 'balitsa' ) ) . "\n";
+			'title' => esc_attr__( 'Select', 'balitsa' ),
+		] ), esc_attr( 'fas fa-fw fa-step-forward' ) ) . "\n";
 	}
 
 	private function frontend_meeting_unselect_link(): string {
-		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
+		return sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_meeting_unselect' ),
 			'class' => 'balitsa-link balitsa-button',
-		] ), esc_attr( 'fas fa-fw fa-step-backward' ), esc_html__( 'Unselect', 'balitsa' ) ) . "\n";
+			'title' => esc_attr__( 'Unselect', 'balitsa' ),
+		] ), esc_attr( 'fas fa-fw fa-step-backward' ) ) . "\n";
 	}
 
 	private function frontend_meeting_shuffle_link(): string {
-		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
+		return sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_meeting_shuffle' ),
 			'class' => 'balitsa-link balitsa-button',
-		] ),  esc_attr( 'fas fa-fw fa-random' ), esc_html__( 'Shuffle', 'balitsa' ) ) . "\n";
+			'title' => esc_attr__( 'Shuffle', 'balitsa' ),
+		] ),  esc_attr( 'fas fa-fw fa-random' ) ) . "\n";
 	}
 
 	private function frontend_meeting_split_link(): string {
-		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
+		return sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_meeting_split' ),
 			'class' => 'balitsa-link balitsa-button',
-		] ), esc_attr( 'fas fa-fw fa-columns' ), esc_html__( 'Split', 'balitsa' ) ) . "\n";
+			'title' => esc_attr__( 'Split', 'balitsa' ),
+		] ), esc_attr( 'fas fa-fw fa-columns' ) ) . "\n";
 	}
 
 	private function frontend_player_insert_link( int|null $meeting_key = NULL ): string {
@@ -777,14 +799,15 @@ final class Balitsa_Struct {
 			assert( !is_null( $this->struct['meeting_key'] ) );
 			$meeting_key = $this->struct['meeting_key'];
 		}
-		return sprintf( '<a%s><span class="%s"></span> %s</a>', Balitsa::atts( [
+		return sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_player_insert', [
 				'meeting' => $meeting_key,
 			] ),
 			'class' => 'balitsa-insert balitsa-button',
+			'title' => esc_attr__( 'Insert', 'balitsa' ),
 			'data-balitsa-form' => '.balitsa-form-player',
 			'data-balitsa-field-availability' => esc_attr( 'on' ),
-		] ), esc_attr( 'fas fa-fw fa-user-plus' ), esc_html__( 'Insert', 'balitsa' ) ) . "\n";
+		] ), esc_attr( 'fas fa-fw fa-user-plus' ) ) . "\n";
 	}
 
 	private function frontend_player_update_link( int $player_key, int $meeting_key ): string {
@@ -960,7 +983,7 @@ final class Balitsa_Struct {
 					'player_key' => $player_key,
 				];
 				$player['user'] = Balitsa_Request::post( 'user', NULL, TRUE )?->ID;
-				$player['name'] = Balitsa_Request::post( 'str', 'text', TRUE );
+				$player['name'] = Balitsa_Request::post( 'text', 'name', TRUE );
 				if ( is_null( $player['name'] ) )
 					$player['name'] = self::get_player_name( $player );
 				if ( is_null( $player['name'] ) )
@@ -993,7 +1016,7 @@ final class Balitsa_Struct {
 					exit( 'player' );
 				$player = &$meeting['player_list'][$player_key];
 				$player['user'] = Balitsa_Request::post( 'user', NULL, TRUE )?->ID;
-				$player['name'] = Balitsa_Request::post( 'str', 'text', TRUE );
+				$player['name'] = Balitsa_Request::post( 'text', 'name', TRUE );
 				if ( is_null( $player['name'] ) )
 					$player['name'] = self::get_player_name( $player );
 				if ( is_null( $player['name'] ) )
