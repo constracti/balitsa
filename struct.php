@@ -1226,6 +1226,17 @@ final class Balitsa_Struct {
 				exit( 'task' );
 		}
 	}
+
+	// callbacks
+
+	public static function callback(): void {
+		if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
+			exit( 'method' );
+		$post = Balitsa_Request::get( 'post' );
+		$task = Balitsa_Request::get( 'str', 'task' );
+		$struct = new self( $post );
+		$struct->ajax( $task );
+	}
 }
 
 add_action( 'add_meta_boxes', function( string $post_type, WP_Post $post ): void {
@@ -1266,11 +1277,5 @@ if (
 	add_filter( 'pre_determine_locale', 'get_locale' );
 }
 
-add_action( 'wp_ajax_' . 'balitsa_struct', function(): void {
-	if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
-		exit( 'method' );
-	$post = Balitsa_Request::get( 'post' );
-	$task = Balitsa_Request::get( 'str', 'task' );
-	$struct = new Balitsa_Struct( $post );
-	$struct->ajax( $task );
-} );
+add_action( 'wp_ajax_' . 'balitsa_struct', [ 'Balitsa_Struct', 'callback' ] );
+add_action( 'wp_ajax_nopriv_' . 'balitsa_struct', [ 'Balitsa_Struct', 'callback' ] );

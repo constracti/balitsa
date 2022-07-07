@@ -197,6 +197,51 @@ final class Balitsa_Access {
 				exit( 'task' );
 		}
 	}
+
+	// callabacks
+
+	public static function pre_get_posts( WP_Query $query ): void {
+		if ( is_admin() )
+			return;
+		if ( current_user_can( 'edit_pages' ) )
+			return;
+		if ( $query->is_page() )
+			return;
+		$user_id = get_current_user_id();
+		$query->set( 'meta_query', [
+			'relation' => 'OR',
+			[
+				'key' => 'balitsa_access',
+				'compare' => 'NOT EXISTS',
+			],
+			[
+				'key' => 'balitsa_access',
+				'compare' => 'LIKE',
+				'value' => sprintf( '#%d#', $user_id ),
+			],
+		] );
+	}
+
+	public static function get_adjacent_post_join( string $join ): string {
+		if ( is_admin() )
+			return $join;
+		if ( current_user_can( 'edit_pages' ) )
+			return $join;
+		global $wpdb;
+		$join .= " LEFT JOIN $wpdb->postmeta AS pm ON pm.post_id = p.ID AND pm.meta_key = 'balitsa_access'";
+		return $join;
+	}
+
+	public static function get_adjacent_post_where( string $where ): string {
+		if ( is_admin() )
+			return $where;
+		if ( current_user_can( 'edit_pages' ) )
+			return $where;
+		$user_id = get_current_user_id();
+		$value = sprintf( '#%d#', $user_id );
+		$where .= " AND (pm.meta_value IS NULL OR pm.meta_value LIKE '$value')";
+		return $where;
+	}
 }
 
 add_action( 'add_meta_boxes', function( string $post_type, WP_Post $post ): void {
@@ -227,24 +272,10 @@ add_action( 'wp_ajax_' . 'balitsa_access', function(): void {
 	$access->ajax( $task );
 } );
 
-add_action( 'pre_get_posts', function( WP_Query $query ): void {
-	if ( is_admin() )
-		return;
-	if ( current_user_can( 'edit_pages' ) )
-		return;
-	if ( $query->is_page() )
-		return;
-	$user_id = get_current_user_id();
-	$query->set( 'meta_query', [
-		'relation' => 'OR',
-		[
-			'key' => 'balitsa_access',
-			'compare' => 'NOT EXISTS',
-		],
-		[
-			'key' => 'balitsa_access',
-			'compare' => 'LIKE',
-			'value' => sprintf( '#%d#', $user_id ),
-		],
-	] );
-} );
+add_action( 'pre_get_posts', [ 'Balitsa_Access', 'pre_get_posts' ] );
+
+add_filter( 'get_previous_post_join', [ 'Balitsa_Access', 'get_adjacent_post_join' ] );
+add_filter( 'get_next_post_join', [ 'Balitsa_Access', 'get_adjacent_post_join' ] );
+
+add_filter( 'get_previous_post_where', [ 'Balitsa_Access', 'get_adjacent_post_where' ] );
+add_filter( 'get_next_post_where', [ 'Balitsa_Access', 'get_adjacent_post_where' ] );
