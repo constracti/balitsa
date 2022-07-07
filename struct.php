@@ -1235,6 +1235,14 @@ add_action( 'wp_enqueue_scripts', function(): void {
 	wp_enqueue_script( 'balitsa-script', Balitsa::url( 'script.js' ), [ 'jquery' ], Balitsa::version() );
 } );
 
+if (
+	defined( 'DOING_AJAX' ) && DOING_AJAX
+	&& isset( $_GET['action'] ) && $_GET['action'] === 'balitsa_struct'
+	&& isset( $_GET['task'] ) && str_starts_with( $_GET['task'], 'frontend_' )
+) {
+	add_filter( 'pre_determine_locale', 'get_locale' );
+}
+
 add_action( 'wp_ajax_' . 'balitsa_struct', function(): void {
 	if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
 		exit( 'method' );
