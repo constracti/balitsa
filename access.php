@@ -217,6 +217,8 @@ add_action( 'admin_enqueue_scripts', function( string $hook_suffix ): void {
 } );
 
 add_action( 'wp_ajax_' . 'balitsa_access', function(): void {
+	if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
+		exit( 'method' );
 	$post = Balitsa_Request::get( 'post' );
 	if ( !current_user_can( 'edit_post', $post->ID ) )
 		exit( 'role' );

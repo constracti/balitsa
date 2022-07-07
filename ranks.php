@@ -152,6 +152,8 @@ add_action( 'admin_enqueue_scripts', function( string $hook_suffix ): void {
 } );
 
 add_action( 'wp_ajax_' . 'balitsa_ranks', function(): void {
+	if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
+		exit( 'method' );
 	if ( !current_user_can( 'manage_options' ) )
 		exit( 'role' );
 	$task = Balitsa_Request::get( 'str', 'task' );

@@ -345,6 +345,8 @@ add_filter( 'balitsa_tab_list', function( array $tabs ): array {
 add_action( 'balitsa_tab_html_settings', [ 'Balitsa_Sports', 'settings_echo' ] );
 
 add_action( 'wp_ajax_' . 'balitsa_sports', function(): void {
+	if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
+		exit( 'method' );
 	if ( !current_user_can( 'manage_options' ) )
 		exit( 'role' );
 	$task = Balitsa_Request::get( 'str', 'task' );

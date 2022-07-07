@@ -1236,6 +1236,8 @@ add_action( 'wp_enqueue_scripts', function(): void {
 } );
 
 add_action( 'wp_ajax_' . 'balitsa_struct', function(): void {
+	if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
+		exit( 'method' );
 	$post = Balitsa_Request::get( 'post' );
 	$task = Balitsa_Request::get( 'str', 'task' );
 	$struct = new Balitsa_Struct( $post );
