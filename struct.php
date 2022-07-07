@@ -76,7 +76,7 @@ final class Balitsa_Struct {
 		if ( $this->can_edit( $user ) )
 			return TRUE;
 		$access = new Balitsa_Access( $this->post );
-		return $access->is_empty() || $access->accesses( $user );
+		return $access->is_empty() || $access->get( $user );
 	}
 
 	private function get_user_key( int|null $meeting_key = NULL, WP_User|int|null $user = NULL ): int|null {
