@@ -13,13 +13,13 @@
 }
 
 a.balitsa-button {
-	color: #fff;
-	background-color: #265728;
+	color: White;
+	background-color: DarkGray;
 }
 
 a.balitsa-button:hover {
-	color: #000;
-	background-color: #ccc;
+	color: White;
+	background-color: Black;
 }
 
 .balitsa-meeting-list {
@@ -59,8 +59,8 @@ a.balitsa-button:hover {
 	flex-direction: column;
 	border-radius: 8px;
 	padding: 4px;
-	color: #fff;
-	background-color: #4caf50;
+	color: White;
+	background-color: Gray;
 }
 
 .balitsa-declaration-choices {
@@ -95,8 +95,8 @@ a.balitsa-button:hover {
 	flex-direction: column;
 	border-radius: 8px;
 	padding: 4px;
-	color: #fff;
-	background-color: #4caf50;
+	color: White;
+	background-color: Gray;
 }
 
 .balitsa-player {
@@ -107,8 +107,8 @@ a.balitsa-button:hover {
 	border-radius: 4px;
 	margin: 4px;
 	padding: 2px;
-	color: #000;
-	background-color: #f4faf4;
+	color: Black;
+	background-color: White;
 }
 
 .balitsa-player-left {
@@ -135,8 +135,8 @@ a.balitsa-button:hover {
 	flex-direction: column;
 	border-radius: 8px;
 	padding: 4px;
-	color: #fff;
-	background-color: #4caf50;
+	color: White;
+	background-color: Gray;
 }
 
 .balitsa-stat-header {
@@ -160,13 +160,13 @@ a.balitsa-button:hover {
 }
 
 .balitsa-stat:nth-child(odd) {
-	color: #000;
-	background-color: #f4faf4;
+	color: Black;
+	background-color: White;
 }
 
 .balitsa-stat:nth-child(even) {
-	color: #000;
-	background-color: #dbefdc;
+	color: Black;
+	background-color: LightGray;
 }
 
 .balitsa-stat-right {
@@ -204,7 +204,9 @@ a.balitsa-button:hover {
 }
 
 .balitsa-mvp {
+	border-radius: 4px;
 	margin: 4px;
+	padding: 4px;
 }
 
 .balitsa-mvpvote-panel {
@@ -213,8 +215,8 @@ a.balitsa-button:hover {
 	flex-direction: column;
 	border-radius: 8px;
 	padding: 4px;
-	color: #fff;
-	background-color: #4caf50;
+	color: White;
+	background-color: Gray;
 }
 
 .balitsa-mvpvote-header {
@@ -237,8 +239,8 @@ a.balitsa-button:hover {
 	border-radius: 4px;
 	overflow: hidden;
 	padding: 2px;
-	color: #000;
-	background-color: #f4faf4;
+	color: Black;
+	background-color: White;
 }
 
 .balitsa-mvpvote-item {
@@ -258,8 +260,8 @@ a.balitsa-button:hover {
 	flex-direction: column;
 	border-radius: 8px;
 	padding: 4px;
-	color: #fff;
-	background-color: #4caf50;
+	color: White;
+	background-color: Gray;
 }
 
 .balitsa-form-player-fields {
@@ -278,13 +280,13 @@ a.balitsa-button:hover {
 }
 
 .balitsa-form-player-fields>label:nth-child(odd) {
-	color: #000;
-	background-color: #f4faf4;
+	color: Black;
+	background-color: White;
 }
 
 .balitsa-form-player-fields>label:nth-child(even) {
-	color: #000;
-	background-color: #dbefdc;
+	color: Black;
+	background-color: LightGray;
 }
 
 .balitsa-form-player-fields>label>* {
