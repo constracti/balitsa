@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Balitsa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-06 16:06+0000\n"
+"POT-Creation-Date: 2023-05-03 12:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -24,32 +24,32 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: struct.php:431
+#: struct.php:463
 msgid "Availability"
 msgstr ""
 
 #. Name of the plugin
-#: struct.php:1214 index.php:33 index.php:34 index.php:41
+#: struct.php:1270 color.php:79 index.php:33 index.php:34 index.php:41
 msgid "Balitsa"
 msgstr ""
 
-#: struct.php:285 struct.php:440 sports.php:149 sports.php:178 access.php:134
+#: struct.php:306 struct.php:473 sports.php:149 sports.php:178 access.php:134
 msgid "Cancel"
 msgstr ""
 
-#: struct.php:710
-msgid "Clear"
+#: struct.php:239
+msgid "Clone"
 msgstr ""
 
-#: struct.php:218
-msgid "Clone"
+#: color.php:83
+msgid "Color"
 msgstr ""
 
 #. Author of the plugin
 msgid "constracti"
 msgstr ""
 
-#: struct.php:161
+#: struct.php:182
 msgid "Construct"
 msgstr ""
 
@@ -57,23 +57,23 @@ msgstr ""
 msgid "Customization plugin of Balitsa website."
 msgstr ""
 
-#: struct.php:167
+#: struct.php:188
 msgid "Danger Zone"
 msgstr ""
 
-#: struct.php:268
+#: struct.php:289
 msgid "Datetime"
 msgstr ""
 
-#: struct.php:631
+#: struct.php:669
 msgid "Decrease"
 msgstr ""
 
-#: struct.php:236 struct.php:824 sports.php:219 sports.php:239
+#: struct.php:257 struct.php:869 sports.php:219 sports.php:239
 msgid "Delete"
 msgstr ""
 
-#: struct.php:826
+#: struct.php:871
 #, php-format
 msgid "Delete %s?"
 msgstr ""
@@ -88,15 +88,15 @@ msgstr ""
 msgid "Delete statistic %s?"
 msgstr ""
 
-#: struct.php:235
+#: struct.php:256
 msgid "Delete?"
 msgstr ""
 
-#: struct.php:173
+#: struct.php:194
 msgid "Destruct"
 msgstr ""
 
-#: struct.php:172
+#: struct.php:193
 msgid "Destruct?"
 msgstr ""
 
@@ -116,11 +116,11 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: struct.php:639
+#: struct.php:678
 msgid "Increase"
 msgstr ""
 
-#: struct.php:191 struct.php:787 sports.php:196
+#: struct.php:212 struct.php:829 sports.php:196
 msgid "Insert"
 msgstr ""
 
@@ -128,7 +128,7 @@ msgstr ""
 msgid "Insert Statistic"
 msgstr ""
 
-#: access.php:208
+#: access.php:253
 msgid "Invite Users"
 msgstr ""
 
@@ -136,39 +136,39 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: struct.php:307
+#: struct.php:328
 msgid "Lock"
 msgstr ""
 
-#: struct.php:297
+#: struct.php:318
 msgid "Locked"
 msgstr ""
 
-#: struct.php:201
+#: struct.php:222
 msgid "Meetings"
 msgstr ""
 
-#: struct.php:702
+#: struct.php:746
 msgid "MVP Vote:"
 msgstr ""
 
-#: struct.php:673
+#: struct.php:713
 msgid "MVP:"
 msgstr ""
 
-#: struct.php:407 sports.php:83 sports.php:137 sports.php:166
+#: struct.php:439 sports.php:83 sports.php:137 sports.php:166
 msgid "Name"
 msgstr ""
 
-#: struct.php:469
+#: struct.php:501
 msgid "No"
 msgstr ""
 
-#: struct.php:412 ranks.php:135
+#: struct.php:444 ranks.php:135
 msgid "Rank"
 msgstr ""
 
-#: struct.php:150 struct.php:739 ranks.php:79 sports.php:188 access.php:144
+#: struct.php:171 struct.php:779 ranks.php:79 sports.php:188 access.php:144
 msgid "Refresh"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: struct.php:748
+#: struct.php:788
 msgid "Select"
 msgstr ""
 
@@ -184,15 +184,15 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: struct.php:762
+#: struct.php:804
 msgid "Shuffle"
 msgstr ""
 
-#: struct.php:769
+#: struct.php:812
 msgid "Split"
 msgstr ""
 
-#: struct.php:272 sports.php:128
+#: struct.php:293 sports.php:128
 msgid "Sport"
 msgstr ""
 
@@ -204,54 +204,54 @@ msgstr ""
 msgid "Statistic"
 msgstr ""
 
-#: struct.php:616 sports.php:85
+#: struct.php:652 sports.php:85
 msgid "Statistics"
 msgstr ""
 
-#: struct.php:292
+#: struct.php:313
 msgid "Status"
 msgstr ""
 
-#: struct.php:284 struct.php:439 sports.php:148 sports.php:177 access.php:133
+#: struct.php:305 struct.php:472 sports.php:148 sports.php:177 access.php:133
 msgid "Submit"
 msgstr ""
 
-#: struct.php:421
+#: struct.php:453
 msgid "Team"
 msgstr ""
 
-#: struct.php:280
+#: struct.php:301
 msgid "Teams"
 msgstr ""
 
-#: struct.php:426
+#: struct.php:458
 msgid "Turn"
 msgstr ""
 
-#: struct.php:307
+#: struct.php:328
 msgid "Unlock"
 msgstr ""
 
-#: struct.php:300
+#: struct.php:321
 msgid "Unlocked"
 msgstr ""
 
-#: struct.php:755
+#: struct.php:796
 msgid "Unselect"
 msgstr ""
 
-#: struct.php:228 struct.php:801 sports.php:209
+#: struct.php:249 struct.php:846 sports.php:209
 msgid "Update"
 msgstr ""
 
-#: struct.php:394 access.php:122
+#: struct.php:426 access.php:122
 msgid "User"
 msgstr ""
 
-#: struct.php:433 struct.php:457
+#: struct.php:465 struct.php:489
 msgid "Yes"
 msgstr ""
 
-#: struct.php:434 struct.php:463
+#: struct.php:466 struct.php:495
 msgid "Yes, if need be"
 msgstr ""

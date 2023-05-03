@@ -26,12 +26,13 @@ final class Balitsa_Color {
 		'LightGray'     => 'Black',
 		'LightGreen'    => 'Black',
 		'Lime'          => 'Black',
-		'OrangeRed'     => 'White',
 		'Orange'        => 'Black',
+		'OrangeRed'     => 'White',
 		'Pink'          => 'Black',
 		'Purple'        => 'White',
 		'RebeccaPurple' => 'White',
 		'Red'           => 'White',
+		'Snow'          => 'Black',
 		'SteelBlue'     => 'White',
 		'Teal'          => 'White',
 		'White'         => 'Black',
@@ -84,9 +85,10 @@ final class Balitsa_Color {
 		$html .= '<select name="balitsa_color" id="balitsa_color">' . "\n";
 		$html .= sprintf( '<option value=""%s></option>', selected( is_null( $color->get() ), TRUE, FALSE ) ) . "\n";
 		foreach ( Balitsa_Color::LIST as $bg => $fg ) {
-			$html .= sprintf( '<option value="%s"%s>%s</option>', esc_attr( $bg ), selected( $color->get() === $bg, TRUE, FALSE ), esc_html( $bg ) ) . "\n";
+			$html .= sprintf( '<option value="%s" data-fg="%s"%s>%s</option>', esc_attr( $bg ), esc_attr( $fg ), selected( $color->get() === $bg, TRUE, FALSE ), esc_html( $bg ) ) . "\n";
 		}
 		$html .= '</select>' . "\n";
+		$html .= '<p><span id="balitsa_color_preview" style="border-radius: 4px; padding: 4px;"></span></p>' . "\n";
 		$html .= '</td>' . "\n";
 		$html .= '</tr>' . "\n";
 		$html .= '</tbody>' . "\n";
@@ -112,3 +114,9 @@ add_action( 'edit_user_profile', ['Balitsa_Color', 'user_edit_section'] );
 
 add_action( 'personal_options_update', ['Balitsa_Color', 'user_edit_section_submit'] );
 add_action( 'edit_user_profile_update', ['Balitsa_Color', 'user_edit_section_submit'] );
+
+add_action( 'admin_enqueue_scripts', function( string $hook_suffix ): void {
+	if ( $hook_suffix !== 'profile.php' && $hook_suffix !== 'user-edit.php' )
+		return;
+	wp_enqueue_script( 'balitsa-color-user-edit-script', Balitsa::url( 'color_user_edit.js' ), [ 'jquery' ], Balitsa::version() );
+} );

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Balitsa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-28 19:42+0000\n"
-"PO-Revision-Date: 2022-07-06 16:06+0000\n"
+"PO-Revision-Date: 2023-05-03 12:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: Ελληνικά\n"
 "Language: el\n"
@@ -23,32 +23,32 @@ msgstr "Αποδοχή"
 msgid "Action"
 msgstr "Ενέργεια"
 
-#: struct.php:431
+#: struct.php:463
 msgid "Availability"
 msgstr "Διαθεσιμότητα"
 
 #. Name of the plugin
-#: struct.php:1214 index.php:33 index.php:34 index.php:41
+#: struct.php:1270 color.php:79 index.php:33 index.php:34 index.php:41
 msgid "Balitsa"
 msgstr "Μπαλίτσα"
 
-#: struct.php:285 struct.php:440 sports.php:149 sports.php:178 access.php:134
+#: struct.php:306 struct.php:473 sports.php:149 sports.php:178 access.php:134
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: struct.php:710
-msgid "Clear"
-msgstr "Καθαρισμός"
-
-#: struct.php:218
+#: struct.php:239
 msgid "Clone"
 msgstr "Αντιγραφή"
+
+#: color.php:83
+msgid "Color"
+msgstr "Χρώμα"
 
 #. Author of the plugin
 msgid "constracti"
 msgstr "constracti"
 
-#: struct.php:161
+#: struct.php:182
 msgid "Construct"
 msgstr "Δημιουργία"
 
@@ -56,23 +56,23 @@ msgstr "Δημιουργία"
 msgid "Customization plugin of Balitsa website."
 msgstr "Πρόσθετο προσαρμογών του ιστοτόπου Μπαλίτσα."
 
-#: struct.php:167
+#: struct.php:188
 msgid "Danger Zone"
 msgstr "Επικίνδυνη Ζώνη"
 
-#: struct.php:268
+#: struct.php:289
 msgid "Datetime"
 msgstr "Η/Ω"
 
-#: struct.php:631
+#: struct.php:669
 msgid "Decrease"
 msgstr "Μείωση"
 
-#: struct.php:236 struct.php:824 sports.php:219 sports.php:239
+#: struct.php:257 struct.php:869 sports.php:219 sports.php:239
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: struct.php:826
+#: struct.php:871
 #, php-format
 msgid "Delete %s?"
 msgstr "Διαγραφή %s;"
@@ -87,15 +87,15 @@ msgstr "Διαγραφή αθλήματος %s;"
 msgid "Delete statistic %s?"
 msgstr "Διαγραφή στατιστικού %s;"
 
-#: struct.php:235
+#: struct.php:256
 msgid "Delete?"
 msgstr "Διαγραφή;"
 
-#: struct.php:173
+#: struct.php:194
 msgid "Destruct"
 msgstr "Καταστροφή"
 
-#: struct.php:172
+#: struct.php:193
 msgid "Destruct?"
 msgstr "Καταστροφή;"
 
@@ -115,11 +115,11 @@ msgstr "https://github.com/constracti/balitsa"
 msgid "Icon"
 msgstr "Εικονίδιο"
 
-#: struct.php:639
+#: struct.php:678
 msgid "Increase"
 msgstr "Αύξηση"
 
-#: struct.php:191 struct.php:787 sports.php:196
+#: struct.php:212 struct.php:829 sports.php:196
 msgid "Insert"
 msgstr "Προσθήκη"
 
@@ -127,7 +127,7 @@ msgstr "Προσθήκη"
 msgid "Insert Statistic"
 msgstr "Εισαγωγή Στατιστικού"
 
-#: access.php:208
+#: access.php:253
 msgid "Invite Users"
 msgstr "Πρόσκληση Χρηστών"
 
@@ -135,39 +135,39 @@ msgstr "Πρόσκληση Χρηστών"
 msgid "Key"
 msgstr "Κλειδί"
 
-#: struct.php:307
+#: struct.php:328
 msgid "Lock"
 msgstr "Κλείδωμα"
 
-#: struct.php:297
+#: struct.php:318
 msgid "Locked"
 msgstr "Κλειδωμένο"
 
-#: struct.php:201
+#: struct.php:222
 msgid "Meetings"
 msgstr "Συναντήσεις"
 
-#: struct.php:702
+#: struct.php:746
 msgid "MVP Vote:"
 msgstr "Ψήφος MVP:"
 
-#: struct.php:673
+#: struct.php:713
 msgid "MVP:"
 msgstr "MVP:"
 
-#: struct.php:407 sports.php:83 sports.php:137 sports.php:166
+#: struct.php:439 sports.php:83 sports.php:137 sports.php:166
 msgid "Name"
 msgstr "Όνομα"
 
-#: struct.php:469
+#: struct.php:501
 msgid "No"
 msgstr "Όχι"
 
-#: struct.php:412 ranks.php:135
+#: struct.php:444 ranks.php:135
 msgid "Rank"
 msgstr "Βαθμός"
 
-#: struct.php:150 struct.php:739 ranks.php:79 sports.php:188 access.php:144
+#: struct.php:171 struct.php:779 ranks.php:79 sports.php:188 access.php:144
 msgid "Refresh"
 msgstr "Ανανέωση"
 
@@ -175,7 +175,7 @@ msgstr "Ανανέωση"
 msgid "Reject"
 msgstr "Απόρριψη"
 
-#: struct.php:748
+#: struct.php:788
 msgid "Select"
 msgstr "Επιλογή"
 
@@ -183,15 +183,15 @@ msgstr "Επιλογή"
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
-#: struct.php:762
+#: struct.php:804
 msgid "Shuffle"
 msgstr "Ανάμιξη"
 
-#: struct.php:769
+#: struct.php:812
 msgid "Split"
 msgstr "Χωρισμός"
 
-#: struct.php:272 sports.php:128
+#: struct.php:293 sports.php:128
 msgid "Sport"
 msgstr "Άθλημα"
 
@@ -203,54 +203,54 @@ msgstr "Αθλήματα"
 msgid "Statistic"
 msgstr "Στατιστικό"
 
-#: struct.php:616 sports.php:85
+#: struct.php:652 sports.php:85
 msgid "Statistics"
 msgstr "Στατιστικά"
 
-#: struct.php:292
+#: struct.php:313
 msgid "Status"
 msgstr "Κατάσταση"
 
-#: struct.php:284 struct.php:439 sports.php:148 sports.php:177 access.php:133
+#: struct.php:305 struct.php:472 sports.php:148 sports.php:177 access.php:133
 msgid "Submit"
 msgstr "Υποβολή"
 
-#: struct.php:421
+#: struct.php:453
 msgid "Team"
 msgstr "Ομάδα"
 
-#: struct.php:280
+#: struct.php:301
 msgid "Teams"
 msgstr "Ομάδες"
 
-#: struct.php:426
+#: struct.php:458
 msgid "Turn"
 msgstr "Σειρά"
 
-#: struct.php:307
+#: struct.php:328
 msgid "Unlock"
 msgstr "Ξεκλείδωμα"
 
-#: struct.php:300
+#: struct.php:321
 msgid "Unlocked"
 msgstr "Ξεκλείδωτο"
 
-#: struct.php:755
+#: struct.php:796
 msgid "Unselect"
 msgstr "Αποεπιλογή"
 
-#: struct.php:228 struct.php:801 sports.php:209
+#: struct.php:249 struct.php:846 sports.php:209
 msgid "Update"
 msgstr "Ενημέρωση"
 
-#: struct.php:394 access.php:122
+#: struct.php:426 access.php:122
 msgid "User"
 msgstr "Χρήστης"
 
-#: struct.php:433 struct.php:457
+#: struct.php:465 struct.php:489
 msgid "Yes"
 msgstr "Ναι"
 
-#: struct.php:434 struct.php:463
+#: struct.php:466 struct.php:495
 msgid "Yes, if need be"
 msgstr "Ναι, αν πρέπει"
