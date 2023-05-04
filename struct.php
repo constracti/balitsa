@@ -343,7 +343,8 @@ final class Balitsa_Struct {
 			foreach ( $meeting_list as $meeting_key => $meeting ) {
 				$html .= $this->frontend_header_tag( $meeting_key );
 				$html .= '<div class="balitsa-declaration">' . "\n";
-				$html .= $this->frontend_declaration_choices( $meeting_key );
+				if ( is_user_logged_in() )
+					$html .= $this->frontend_declaration_choices( $meeting_key );
 				$html .= $this->frontend_declaration_players( $meeting_key );
 				$html .= '</div><!-- .balitsa-declaration -->' . "\n";
 				if ( $this->can_edit() && !$this->struct['readonly'] ) {
@@ -1155,6 +1156,8 @@ final class Balitsa_Struct {
 				$this->save();
 				Balitsa::success( $this->frontend() );
 			case 'frontend_declare':
+				if ( !is_user_logged_in() )
+					exit( 'role' );
 				if ( !$this->can_view() )
 					exit( 'role' );
 				if ( is_null( $this->struct ) )
@@ -1196,6 +1199,8 @@ final class Balitsa_Struct {
 				$this->save();
 				Balitsa::success( $this->frontend() );
 			case 'frontend_stat':
+				if ( !is_user_logged_in() )
+					exit( 'role' );
 				if ( !$this->can_view() )
 					exit( 'role' );
 				if ( is_null( $this->struct ) )
@@ -1224,6 +1229,8 @@ final class Balitsa_Struct {
 				$this->save();
 				Balitsa::success( $this->frontend() );
 			case 'frontend_mvp':
+				if ( !is_user_logged_in() )
+					exit( 'role' );
 				if ( !$this->can_view() )
 					exit( 'role' );
 				if ( is_null( $this->struct ) )
