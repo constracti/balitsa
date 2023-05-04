@@ -4,7 +4,7 @@
  * Plugin Name: Balitsa
  * Plugin URI: https://github.com/constracti/balitsa
  * Description: Customization plugin of Balitsa website.
- * Version: 1.0
+ * Version: 1.1
  * Requires PHP: 8.0
  * Author: constracti
  * Author URI: https://github.com/constracti

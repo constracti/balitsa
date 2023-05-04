@@ -98,13 +98,6 @@ final class Balitsa_Struct {
 		return NULL;
 	}
 
-	private static function css( array $css ): string {
-		$ret = [];
-		foreach ( $css as $k => $v )
-			$ret[] = sprintf( '%s: %s;', $k, $v );
-		return implode( ' ', $ret );
-	}
-
 	private static function get_player_name( array $player ): string|null {
 		if ( is_null( $player['user'] ) )
 			return $player['name'];
@@ -114,21 +107,14 @@ final class Balitsa_Struct {
 		return $user->display_name;
 	}
 
-	private static function get_player_color_css( array $player ): array {
+	private static function get_player_color_css( array $player ): string {
 		if ( is_null( $player['user'] ) )
-			return [];
+			return '';
 		$user = get_user_by( 'ID', $player['user'] );
 		if ( $user === FALSE )
-			return [];
+			return '';
 		$color = new Balitsa_Color( $user );
-		$bg = $color->get();
-		if ( !isset( Balitsa_Color::LIST[$bg] ) )
-			return [];
-		$fg = Balitsa_Color::LIST[$bg];
-		return [
-			'background-color' => $bg,
-			'color' => $fg,
-		];
+		return $color->css();
 	}
 
 	private static function get_player_rank( array $player, string|null $sport_key ): int|null {
@@ -584,7 +570,7 @@ final class Balitsa_Struct {
 		$meeting = $this->struct['meeting_list'][$meeting_key];
 		assert( array_key_exists( $player_key, $meeting['player_list'] ) );
 		$player = $meeting['player_list'][$player_key];
-		$html = sprintf( '<div class="balitsa-player" style="%s">', esc_attr( self::css( self::get_player_color_css( $player ) ) ) ) . "\n";
+		$html = sprintf( '<div class="balitsa-player" style="%s">', esc_attr( self::get_player_color_css( $player ) ) ) . "\n";
 		$html .= '<div class="balitsa-player-left">' . "\n";
 		if ( is_null( $this->struct['meeting_key'] ) ) {
 			$html .= '<div class="balitsa-player-availability">' . "\n";
@@ -718,7 +704,7 @@ final class Balitsa_Struct {
 			if ( $vote < $votes_max )
 				continue;
 			$player = $player_list[$player];
-			$html .= sprintf( '<span class="balitsa-mvp" style="%s">%s</span>', esc_attr( self::css( self::get_player_color_css( $player ) ) ), esc_html( self::get_player_name( $player ) ) ) . "\n";
+			$html .= sprintf( '<span class="balitsa-mvp" style="%s">%s</span>', esc_attr( self::get_player_color_css( $player ) ), esc_html( self::get_player_name( $player ) ) ) . "\n";
 		}
 		$html .= '</div><!-- .balitsa-mvp-right -->' . "\n";
 		$html .= '</div><!-- .balitsa-mvp-panel -->' . "\n";

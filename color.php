@@ -71,6 +71,14 @@ final class Balitsa_Color {
 		$this->save();
 	}
 
+	public function css(): string {
+		$bg = $this->color;
+		if ( !isset( self::LIST[$bg] ) )
+			return '';
+		$fg = self::LIST[$bg];
+		return sprintf( 'background-color: %s; color: %s;', $bg, $fg );
+	}
+
 	// user edit section
 
 	public static function user_edit_section( WP_User $user ): void {
