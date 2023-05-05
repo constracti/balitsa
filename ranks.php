@@ -38,7 +38,7 @@ final class Balitsa_Ranks {
 	// functions
 
 	public function get( string $sport ): int|null {
-		if ( !array_key_exists( $sport, $this->ranks ) )
+		if ( !isset( $this->ranks[$sport] ) )
 			return NULL;
 		return $this->ranks[$sport];
 	}
@@ -114,11 +114,11 @@ final class Balitsa_Ranks {
 			case 'column_refresh':
 				Balitsa::success( $this->column() );
 			case 'column_update':
-				$sport = Balitsa_Request::get( 'str', 'sport' );
+				$sport = Balitsa::request_slug( 'get', 'sport' );
 				if ( !Balitsa_Sports::exists( $sport ) )
 					exit( 'sport' );
 				$rank = $this->get( $sport );
-				$r = Balitsa_Request::get( 'int', 'rank' );
+				$r = Balitsa::request_int( 'get', 'rank' );
 				if ( $r < self::MIN || $r > self::MAX )
 					exit( 'rank' );
 				if ( $r === $rank )
@@ -156,8 +156,8 @@ add_action( 'wp_ajax_' . 'balitsa_ranks', function(): void {
 		exit( 'method' );
 	if ( !current_user_can( 'manage_options' ) )
 		exit( 'role' );
-	$task = Balitsa_Request::get( 'str', 'task' );
-	$user = Balitsa_Request::get( 'user' );
+	$task = Balitsa::request_str( 'get', 'task' );
+	$user = Balitsa::request_user( 'get', 'user' );
 	$ranks = new Balitsa_Ranks( $user );
 	$ranks->ajax( $task );
 } );

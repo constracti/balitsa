@@ -109,11 +109,8 @@ final class Balitsa_Color {
 		if ( $user === FALSE )
 			exit( 'user' );
 		$color = new self( $user );
-		$bg = Balitsa_Request::post( 'str', 'balitsa_color', TRUE );
-		if ( !is_null( $bg ) && isset( self::LIST[$bg] ) )
-			$color->set( $bg );
-		else
-			$color->set( NULL );
+		$bg = Balitsa::request_str( 'post', 'balitsa_color', TRUE, option_list: array_keys( self::LIST ) );
+		$color->set( $bg );
 	}
 }
 

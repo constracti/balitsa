@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) )
 struct : array|null
 	'meeting_list' : meeting[int]
 	'meeting_ai' : int
-	'meeting_key' : int|null
+	'meeting_key' : ?int
 	'readonly' : bool
 
 meeting : array
@@ -16,16 +16,16 @@ meeting : array
 	'player_list' : player[int]
 	'player_ai' : int
 	'datetime' : string
-	'sport' : string|null
+	'sport' : ?string
 	'teams' : int
 
 player: array
 	'player_key' : int
-	'user' : int|null
+	'user' : ?int
 	'name' : string
-	'rank' : int|null
-	'team' : int|null
-	'turn' : int|null
+	'rank' : ?int
+	'team' : ?int
+	'turn' : ?int
 	'availability' : bool
 	'timestamp' : int
 	'stats' : int[string]|undefined
@@ -85,7 +85,7 @@ final class Balitsa_Struct {
 			assert( !is_null( $this->struct['meeting_key'] ) );
 			$meeting_key = $this->struct['meeting_key'];
 		}
-		assert( array_key_exists( $meeting_key, $this->struct['meeting_list'] ) );
+		assert( isset( $this->struct['meeting_list'][$meeting_key] ) );
 		$meeting = $this->struct['meeting_list'][$meeting_key];
 		if ( is_a( $user, 'WP_User' ) )
 			$user = $user->ID;
@@ -372,7 +372,7 @@ final class Balitsa_Struct {
 	private function frontend_header_tag( int|null $meeting_key = NULL ): string {
 		assert( !is_null( $this->struct ) );
 		if ( !is_null( $meeting_key ) ) {
-			assert( array_key_exists( $meeting_key, $this->struct['meeting_list'] ) );
+			assert( isset( $this->struct['meeting_list'][$meeting_key] ) );
 		} else {
 			assert( !is_null( $this->struct['meeting_key'] ) );
 			$meeting_key = $this->struct['meeting_key'];
@@ -466,7 +466,7 @@ final class Balitsa_Struct {
 	private function frontend_declaration_choices( int $meeting_key ): string {
 		assert( !is_null( $this->struct ) );
 		assert( is_null( $this->struct['meeting_key'] ) );
-		assert( array_key_exists( $meeting_key, $this->struct['meeting_list'] ) );
+		assert( isset( $this->struct['meeting_list'][$meeting_key] ) );
 		$meeting = $this->struct['meeting_list'][$meeting_key];
 		$player_key = $this->get_user_key( $meeting_key );
 		$player = !is_null( $player_key ) ? $meeting['player_list'][$player_key] : NULL;
@@ -522,7 +522,7 @@ final class Balitsa_Struct {
 	private function frontend_declaration_players( int $meeting_key ): string {
 		assert( !is_null( $this->struct ) );
 		assert( is_null( $this->struct['meeting_key'] ) );
-		assert( array_key_exists( $meeting_key, $this->struct['meeting_list'] ) );
+		assert( isset( $this->struct['meeting_list'][$meeting_key] ) );
 		$meeting = $this->struct['meeting_list'][$meeting_key];
 		$player_list = $meeting['player_list'];
 		uasort( $player_list, Balitsa::sorter( 'timestamp', 'player_key' ) );
@@ -541,7 +541,7 @@ final class Balitsa_Struct {
 		$teams = [];
 		foreach ( $meeting['player_list'] as $player ) {
 			$team = $player['team'];
-			if ( !array_key_exists( $team, $teams ) )
+			if ( !isset( $teams[$team] ) )
 				$teams[$team] = [];
 			$teams[$team][] = $player;
 		}
@@ -562,13 +562,13 @@ final class Balitsa_Struct {
 		assert( !is_null( $this->struct ) );
 		if ( !is_null( $meeting_key ) ) {
 			assert( is_null( $this->struct['meeting_key'] ) );
-			assert( array_key_exists( $meeting_key, $this->struct['meeting_list'] ) );
+			assert( isset( $this->struct['meeting_list'][$meeting_key] ) );
 		} else {
 			assert( !is_null( $this->struct['meeting_key'] ) );
 			$meeting_key = $this->struct['meeting_key'];
 		}
 		$meeting = $this->struct['meeting_list'][$meeting_key];
-		assert( array_key_exists( $player_key, $meeting['player_list'] ) );
+		assert( isset( $meeting['player_list'][$player_key] ) );
 		$player = $meeting['player_list'][$player_key];
 		$html = sprintf( '<div class="balitsa-player" style="%s">', esc_attr( self::get_player_color_css( $player ) ) ) . "\n";
 		$html .= '<div class="balitsa-player-left">' . "\n";
@@ -587,7 +587,7 @@ final class Balitsa_Struct {
 			$sport = Balitsa_Sports::select( $meeting['sport'] );
 			if ( !is_null( $sport ) ) {
 				foreach ( $sport['stats'] as $stat_key => $stat ) {
-					$value = array_key_exists( 'stats', $player ) && is_array( $player['stats'] ) && array_key_exists( $stat_key, $player['stats'] ) && is_int( $player['stats'][$stat_key] ) ? $player['stats'][$stat_key] : NULL;
+					$value = isset( $player['stats'] ) && is_array( $player['stats'] ) && isset( $player['stats'][$stat_key] ) && is_int( $player['stats'][$stat_key] ) ? $player['stats'][$stat_key] : NULL;
 					if ( !is_int( $value ) )
 						;
 					elseif ( $value <= self::LIMIT )
@@ -599,7 +599,7 @@ final class Balitsa_Struct {
 			if ( $this->struct['readonly'] ) {
 				$value = 0;
 				foreach ( $meeting['player_list'] as $p ) {
-					if ( array_key_exists( 'mvp', $p ) && $p['mvp'] === $player_key )
+					if ( isset( $p['mvp'] ) && $p['mvp'] === $player_key )
 						$value++;
 				}
 				if ( $value <= self::LIMIT )
@@ -631,7 +631,7 @@ final class Balitsa_Struct {
 		if ( is_null( $player ) )
 			return '';
 		$player = $meeting['player_list'][$player];
-		if ( !array_key_exists( 'stats', $player ) )
+		if ( !isset( $player['stats'] ) )
 			$player['stats'] = [];
 		$html = '<div class="balitsa-stat-panel">' . "\n";
 		$html .= '<div class="balitsa-stat-header">' . "\n";
@@ -641,7 +641,7 @@ final class Balitsa_Struct {
 		$html .= '<div class="balitsa-stat-list">' . "\n";
 		foreach ( $sport['stats'] as $stat_key => $stat ) {
 			$html .= '<div class="balitsa-stat">' . "\n";
-			$value = array_key_exists( $stat_key, $player['stats'] ) ? $player['stats'][$stat_key] : NULL;
+			$value = isset( $player['stats'][$stat_key] ) ? $player['stats'][$stat_key] : NULL;
 			if ( is_null( $value ) )
 				$value = 0;
 			$html .= sprintf( '<div class="balitsa-stat-left"><span class="%s"></span> %s: %s</div>', esc_attr( $stat['icon'] ), esc_html( $stat['name'] ), esc_html( $value ) ) . "\n";
@@ -683,10 +683,10 @@ final class Balitsa_Struct {
 		$player_list = $meeting['player_list'];
 		uasort( $player_list, Balitsa::sorter( 'turn', 'player_key' ) );
 		foreach ( $player_list as $player ) {
-			if ( !array_key_exists( 'mvp', $player ) || !array_key_exists( $player['mvp'], $meeting['player_list'] ) )
+			if ( !isset( $player['mvp'] ) || !isset( $meeting['player_list'][$player['mvp']] ) )
 				continue;
 			$mvp = $player['mvp'];
-			if ( !array_key_exists( $mvp, $votes ) )
+			if ( !isset( $votes[$mvp] ) )
 				$votes[$mvp] = 0;
 			$votes[$mvp]++;
 			if ( $votes[$mvp] > $votes_max )
@@ -722,9 +722,9 @@ final class Balitsa_Struct {
 			return '';
 		$player = $meeting['player_list'][$player_key];
 		$mvp = NULL;
-		if ( array_key_exists( 'mvp', $player ) ) {
+		if ( isset( $player['mvp'] ) ) {
 			$mvp = $player['mvp'];
-			$mvp = array_key_exists( $mvp, $meeting['player_list'] ) ? $meeting['player_list'][$mvp] : NULL;
+			$mvp = isset( $meeting['player_list'][$mvp] ) ? $meeting['player_list'][$mvp] : NULL;
 		}
 		$html = '<div class="balitsa-mvpvote-panel">' . "\n";
 		$html .= '<div class="balitsa-mvpvote-header">' . "\n";
@@ -803,7 +803,7 @@ final class Balitsa_Struct {
 	private function frontend_player_insert_link( int|null $meeting_key = NULL ): string {
 		assert( !is_null( $this->struct ) );
 		if ( !is_null( $meeting_key ) ) {
-			assert( array_key_exists( $meeting_key, $this->struct['meeting_list'] ) );
+			assert( isset( $this->struct['meeting_list'][$meeting_key] ) );
 		} else {
 			assert( !is_null( $this->struct['meeting_key'] ) );
 			$meeting_key = $this->struct['meeting_key'];
@@ -821,9 +821,9 @@ final class Balitsa_Struct {
 
 	private function frontend_player_update_link( int $player_key, int $meeting_key ): string {
 		assert( !is_null( $this->struct ) );
-		assert( array_key_exists( $meeting_key, $this->struct['meeting_list'] ) );
+		assert( isset( $this->struct['meeting_list'][$meeting_key] ) );
 		$meeting = $this->struct['meeting_list'][$meeting_key];
-		assert( array_key_exists( $player_key, $meeting['player_list'] ) );
+		assert( isset( $meeting['player_list'][$player_key] ) );
 		$player = $meeting['player_list'][$player_key];
 		return sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_player_update', [
@@ -844,9 +844,9 @@ final class Balitsa_Struct {
 
 	private function frontend_player_delete_link( int $player_key, int $meeting_key ): string {
 		assert( !is_null( $this->struct ) );
-		assert( array_key_exists( $meeting_key, $this->struct['meeting_list'] ) );
+		assert( isset( $this->struct['meeting_list'][$meeting_key] ) );
 		$meeting = $this->struct['meeting_list'][$meeting_key];
-		assert( array_key_exists( $player_key, $meeting['player_list'] ) );
+		assert( isset( $meeting['player_list'][$player_key] ) );
 		$player = $meeting['player_list'][$player_key];
 		return sprintf( '<a%s><span class="%s"></span></a>', Balitsa::atts( [
 			'href' => $this->ajax_href( 'frontend_player_delete', [
@@ -921,11 +921,11 @@ final class Balitsa_Struct {
 					'player_list' => [],
 					'player_ai' => 0,
 				];
-				$meeting['datetime'] = Balitsa_Request::post( 'datetime' );
-				$meeting['sport'] = Balitsa_Request::post( 'str', 'sport', TRUE );
+				$meeting['datetime'] = Balitsa::request_datetime( 'post', 'datetime' );
+				$meeting['sport'] = Balitsa::request_slug( 'post', 'sport', TRUE );
 				if ( !is_null( $meeting['sport'] ) && !Balitsa_Sports::exists( $meeting['sport'] ) )
 					exit( 'sport' );
-				$meeting['teams'] = Balitsa_Request::post( 'int', 'teams' );
+				$meeting['teams'] = Balitsa::request_int( 'post', 'teams' );
 				if ( $meeting['teams'] <= 0 )
 					exit( 'teams' );
 				$this->struct['meeting_list'][$meeting_key] = $meeting;
@@ -936,15 +936,15 @@ final class Balitsa_Struct {
 					exit( 'role' );
 				if ( is_null( $this->struct ) )
 					exit( 'post' );
-				$meeting_key = Balitsa_Request::get( 'int', 'meeting' );
-				if ( !array_key_exists( $meeting_key, $this->struct['meeting_list'] ) )
+				$meeting_key = Balitsa::request_int( 'get', 'meeting' );
+				if ( !isset( $this->struct['meeting_list'][$meeting_key] ) )
 					exit( 'meeting' );
 				$meeting = &$this->struct['meeting_list'][$meeting_key];
-				$meeting['datetime'] = Balitsa_Request::post( 'datetime' );
-				$meeting['sport'] = Balitsa_Request::post( 'str', 'sport', TRUE );
+				$meeting['datetime'] = Balitsa::request_datetime( 'post', 'datetime' );
+				$meeting['sport'] = Balitsa::request_slug( 'post', 'sport', TRUE );
 				if ( !is_null( $meeting['sport'] ) && !Balitsa_Sports::exists( $meeting['sport'] ) )
 					exit( 'sport' );
-				$meeting['teams'] = Balitsa_Request::post( 'int', 'teams' );
+				$meeting['teams'] = Balitsa::request_int( 'post', 'teams' );
 				if ( $meeting['teams'] <= 0 )
 					exit( 'teams' );
 				$this->save();
@@ -954,8 +954,8 @@ final class Balitsa_Struct {
 					exit( 'role' );
 				if ( is_null( $this->struct ) )
 					exit( 'post' );
-				$meeting_key = Balitsa_Request::get( 'int', 'meeting' );
-				if ( !array_key_exists( $meeting_key, $this->struct['meeting_list'] ) )
+				$meeting_key = Balitsa::request_int( 'get', 'meeting' );
+				if ( !isset( $this->struct['meeting_list'][$meeting_key] ) )
 					exit( 'meeting' );
 				if ( $meeting_key === $this->struct['meeting_key'] )
 					exit( 'meeting' );
@@ -983,28 +983,28 @@ final class Balitsa_Struct {
 					exit( 'post' );
 				if ( $this->struct['readonly'] )
 					exit( 'post' );
-				$meeting_key = Balitsa_Request::get( 'int', 'meeting' );
-				if ( !array_key_exists( $meeting_key, $this->struct['meeting_list'] ) )
+				$meeting_key = Balitsa::request_int( 'get', 'meeting' );
+				if ( !isset( $this->struct['meeting_list'][$meeting_key] ) )
 					exit( 'meeting' );
 				$meeting = &$this->struct['meeting_list'][$meeting_key];
 				$player_key = $meeting['player_ai']++;
 				$player = [
 					'player_key' => $player_key,
 				];
-				$player['user'] = Balitsa_Request::post( 'user', NULL, TRUE )?->ID;
-				$player['name'] = Balitsa_Request::post( 'text', 'name', TRUE );
+				$player['user'] = Balitsa::request_user( 'post', 'user', TRUE )?->ID;
+				$player['name'] = Balitsa::request_text( 'post', 'name', TRUE );
 				if ( is_null( $player['name'] ) )
 					$player['name'] = self::get_player_name( $player );
 				if ( is_null( $player['name'] ) )
 					exit( 'name' );
-				$player['rank'] = Balitsa_Request::post( 'int', 'rank', TRUE );
+				$player['rank'] = Balitsa::request_int( 'post', 'rank', TRUE );
 				if ( is_null( $player['rank'] ) )
 					$player['rank'] = self::get_player_rank( $player, $meeting['sport'] );
-				$player['team'] = Balitsa_Request::post( 'int', 'team', TRUE );
+				$player['team'] = Balitsa::request_int( 'post', 'team', TRUE );
 				if ( !is_null( $player['team'] ) && $player['team'] < 0 )
 					exit( 'team' );
-				$player['turn'] = Balitsa_Request::post( 'int', 'turn', TRUE );
-				$player['availability'] = Balitsa_Request::post( 'onoff', 'availability' );
+				$player['turn'] = Balitsa::request_int( 'post', 'turn', TRUE );
+				$player['availability'] = Balitsa::request_onoff( 'post', 'availability' );
 				$player['timestamp'] = time();
 				$meeting['player_list'][$player_key] = $player;
 				$this->save();
@@ -1016,28 +1016,28 @@ final class Balitsa_Struct {
 					exit( 'post' );
 				if ( $this->struct['readonly'] )
 					exit( 'post' );
-				$meeting_key = Balitsa_Request::get( 'int', 'meeting' );
-				if ( !array_key_exists( $meeting_key, $this->struct['meeting_list'] ) )
+				$meeting_key = Balitsa::request_int( 'get', 'meeting' );
+				if ( !isset( $this->struct['meeting_list'][$meeting_key] ) )
 					exit( 'meeting' );
 				$meeting = &$this->struct['meeting_list'][$meeting_key];
-				$player_key = Balitsa_Request::get( 'int', 'player' );
-				if ( !array_key_exists( $player_key, $meeting['player_list'] ) )
+				$player_key = Balitsa::request_int( 'get', 'player' );
+				if ( !isset( $meeting['player_list'][$player_key] ) )
 					exit( 'player' );
 				$player = &$meeting['player_list'][$player_key];
-				$player['user'] = Balitsa_Request::post( 'user', NULL, TRUE )?->ID;
-				$player['name'] = Balitsa_Request::post( 'text', 'name', TRUE );
+				$player['user'] = Balitsa::request_user( 'post', 'user', TRUE )?->ID;
+				$player['name'] = Balitsa::request_text( 'post', 'name', TRUE );
 				if ( is_null( $player['name'] ) )
 					$player['name'] = self::get_player_name( $player );
 				if ( is_null( $player['name'] ) )
 					exit( 'name' );
-				$player['rank'] = Balitsa_Request::post( 'int', 'rank', TRUE );
+				$player['rank'] = Balitsa::request_int( 'post', 'rank', TRUE );
 				if ( is_null( $player['rank'] ) )
 					$player['rank'] = self::get_player_rank( $player, $meeting['sport'] );
-				$player['team'] = Balitsa_Request::post( 'int', 'team', TRUE );
+				$player['team'] = Balitsa::request_int( 'post', 'team', TRUE );
 				if ( !is_null( $player['team'] ) && $player['team'] < 0 )
 					exit( 'team' );
-				$player['turn'] = Balitsa_Request::post( 'int', 'turn', TRUE );
-				$player['availability'] = Balitsa_Request::post( 'onoff', 'availability' );
+				$player['turn'] = Balitsa::request_int( 'post', 'turn', TRUE );
+				$player['availability'] = Balitsa::request_onoff( 'post', 'availability' );
 				$this->save();
 				Balitsa::success( $this->frontend() );
 			case 'frontend_player_delete':
@@ -1047,12 +1047,12 @@ final class Balitsa_Struct {
 					exit( 'post' );
 				if ( $this->struct['readonly'] )
 					exit( 'post' );
-				$meeting_key = Balitsa_Request::get( 'int', 'meeting' );
-				if ( !array_key_exists( $meeting_key, $this->struct['meeting_list'] ) )
+				$meeting_key = Balitsa::request_int( 'get', 'meeting' );
+				if ( !isset( $this->struct['meeting_list'][$meeting_key] ) )
 					exit( 'meeting' );
 				$meeting = &$this->struct['meeting_list'][$meeting_key];
-				$player_key = Balitsa_Request::get( 'int', 'player' );
-				if ( !array_key_exists( $player_key, $meeting['player_list'] ) )
+				$player_key = Balitsa::request_int( 'get', 'player' );
+				if ( !isset( $meeting['player_list'][$player_key] ) )
 					exit( 'player' );
 				unset( $meeting['player_list'][$player_key] );
 				$this->save();
@@ -1066,8 +1066,8 @@ final class Balitsa_Struct {
 					exit( 'post' );
 				if ( !is_null( $this->struct['meeting_key'] ) )
 					exit( 'post' );
-				$meeting = Balitsa_Request::get( 'int', 'meeting' );
-				if ( !array_key_exists( $meeting, $this->struct['meeting_list'] ) )
+				$meeting = Balitsa::request_int( 'get', 'meeting' );
+				if ( !isset( $this->struct['meeting_list'][$meeting] ) )
 					exit( 'meeting' );
 				$this->struct['meeting_key'] = $meeting;
 				$this->save();
@@ -1152,13 +1152,11 @@ final class Balitsa_Struct {
 					exit( 'post' );
 				if ( !is_null( $this->struct['meeting_key'] ) )
 					exit( 'post' );
-				$meeting_key = Balitsa_Request::get( 'int', 'meeting' );
-				if ( !array_key_exists( $meeting_key, $this->struct['meeting_list'] ) )
+				$meeting_key = Balitsa::request_int( 'get', 'meeting' );
+				if ( !isset( $this->struct['meeting_list'][$meeting_key] ) )
 					exit( 'meeting' );
 				$meeting = &$this->struct['meeting_list'][$meeting_key];
-				$availability = Balitsa_Request::get( 'str', 'availability' );
-				if ( !in_array( $availability, [ 'yes', 'maybe', 'no' ], TRUE ) )
-					exit( 'availability' );
+				$availability = Balitsa::request_str( 'get', 'availability', option_list: [ 'yes', 'maybe', 'no' ] );
 				$player_key = $this->get_user_key( $meeting_key );
 				if ( $availability !== 'no' ) {
 					if ( is_null( $player_key ) ) {
@@ -1204,12 +1202,12 @@ final class Balitsa_Struct {
 				$sport = Balitsa_Sports::select( $meeting['sport'] );
 				if ( is_null( $sport ) )
 					exit( 'post' );
-				$stat_key = Balitsa_Request::get( 'word', 'stat' );
-				if ( !array_key_exists( $stat_key, $sport['stats'] ) )
+				$stat_key = Balitsa::request_slug( 'get', 'stat' );
+				if ( !isset( $sport['stats'][$stat_key] ) )
 					exit( 'stat' );
-				if ( !array_key_exists( 'stats', $player ) )
+				if ( !isset( $player['stats'] ) )
 					$player['stats'] = [];
-				$player['stats'][$stat_key] = Balitsa_Request::get( 'int', 'value' );
+				$player['stats'][$stat_key] = Balitsa::request_int( 'get', 'value' );
 				if ( $player['stats'][$stat_key] < 0 )
 					exit( 'value' );
 				$this->save();
@@ -1231,8 +1229,8 @@ final class Balitsa_Struct {
 				if ( is_null( $player_key ) )
 					exit( 'role' );
 				$player = &$meeting['player_list'][$player_key];
-				$mvp = Balitsa_Request::get( 'int', 'player', TRUE );
-				if ( !is_null( $mvp ) && !array_key_exists( $mvp, $meeting['player_list'] ) )
+				$mvp = Balitsa::request_int( 'get', 'player', TRUE );
+				if ( !is_null( $mvp ) && !isset( $meeting['player_list'][$mvp] ) )
 					exit( 'player' );
 				$player['mvp'] = $mvp;
 				$this->save();
@@ -1247,8 +1245,8 @@ final class Balitsa_Struct {
 	public static function callback(): void {
 		if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
 			exit( 'method' );
-		$post = Balitsa_Request::get( 'post' );
-		$task = Balitsa_Request::get( 'str', 'task' );
+		$post = Balitsa::request_post( 'get', 'post' );
+		$task = Balitsa::request_str( 'get', 'task' );
 		$struct = new self( $post );
 		$struct->ajax( $task );
 	}

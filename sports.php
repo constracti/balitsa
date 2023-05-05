@@ -37,18 +37,19 @@ final class Balitsa_Sports {
 
 	// functions
 
-	public static function select( string|null $sport = NULL ): array|null {
+	public static function select( ?string $sport = NULL ): ?array {
 		if ( is_null( self::$sports ) )
 			self::load();
 		if ( is_null( $sport ) )
 			return self::$sports;
-		if ( array_key_exists( $sport, self::$sports ) )
+		if ( isset( self::$sports[$sport] ) )
 			return self::$sports[$sport];
 		return NULL;
 	}
 
 	public static function exists( string $sport ): bool {
-		return array_key_exists( $sport, self::select() );
+		$sports = self::select();
+		return isset( $sports[$sport] );
 	}
 
 	// settings
@@ -267,27 +268,25 @@ final class Balitsa_Sports {
 			case 'settings_insert':
 				self::select();
 				$sport = [
-					'key' => Balitsa_Request::post( 'word', 'key' ),
-					'name' => Balitsa_Request::post( 'text', 'name' ),
-					'icon' => Balitsa_Request::post( 'text', 'icon' ),
+					'key' => Balitsa::request_slug( 'post', 'key' ),
+					'name' => Balitsa::request_text( 'post', 'name' ),
+					'icon' => Balitsa::request_text( 'post', 'icon' ),
 					'stats' => [],
 				];
-				if ( array_key_exists( $sport['key'], self::$sports ) )
+				if ( isset( self::$sports[$sport['key']] ) )
 					exit( 'key' );
 				self::$sports[$sport['key']] = $sport;
 				self::save();
 				Balitsa::success( self::settings() );
 			case 'settings_update':
 				self::select();
-				$sport_key = Balitsa_Request::get( 'str', 'sport' );
-				if ( !array_key_exists( $sport_key, self::$sports ) )
-					exit( 'sport' );
+				$sport_key = Balitsa::request_str( 'get', 'sport', option_list: array_keys( self::$sports ) );
 				$sport = &self::$sports[$sport_key];
-				$sport['key'] = Balitsa_Request::post( 'word', 'key' );
-				$sport['name'] = Balitsa_Request::post( 'text', 'name' );
-				$sport['icon'] = Balitsa_Request::post( 'text', 'icon' );
+				$sport['key'] = Balitsa::request_slug( 'post', 'key' );
+				$sport['name'] = Balitsa::request_text( 'post', 'name' );
+				$sport['icon'] = Balitsa::request_text( 'post', 'icon' );
 				if ( $sport['key'] === $sport_key ) {
-				} elseif ( array_key_exists( $sport['key'], self::$sports ) ) {
+				} elseif ( isset( self::$sports[$sport['key']] ) ) {
 					exit( 'key' );
 				} else {
 					unset( self::$sports[$sport_key] );
@@ -297,37 +296,29 @@ final class Balitsa_Sports {
 				Balitsa::success( self::settings() );
 			case 'settings_delete':
 				self::select();
-				$sport_key = Balitsa_Request::get( 'str', 'sport' );
-				if ( !array_key_exists( $sport_key, self::$sports ) )
-					exit( 'sport' );
+				$sport_key = Balitsa::request_str( 'get', 'sport', option_list: array_keys( self::$sports ) );
 				unset( self::$sports[$sport_key] );
 				self::save();
 				Balitsa::success( self::settings() );
 			case 'settings_stat_insert':
 				self::select();
-				$sport_key = Balitsa_Request::get( 'str', 'sport' );
-				if ( !array_key_exists( $sport_key, self::$sports ) )
-					exit( 'sport' );
+				$sport_key = Balitsa::request_str( 'get', 'sport', option_list: array_keys( self::$sports ) );
 				$sport = &self::$sports[$sport_key];
 				$stat = [
-					'key' => Balitsa_Request::post( 'text', 'key' ),
-					'name' => Balitsa_Request::post( 'text', 'name' ),
-					'icon' => Balitsa_Request::post( 'text', 'icon' ),
+					'key' => Balitsa::request_text( 'post', 'key' ),
+					'name' => Balitsa::request_text( 'post', 'name' ),
+					'icon' => Balitsa::request_text( 'post', 'icon' ),
 				];
-				if ( array_key_exists( $stat['key'], $sport['stats'] ) )
+				if ( isset( $sport['stats'][$stat['key']] ) )
 					exit( 'key' );
 				$sport['stats'][$stat['key']] = $stat;
 				self::save();
 				Balitsa::success( self::settings() );
 			case 'settings_stat_delete':
 				self::select();
-				$sport_key = Balitsa_Request::get( 'str', 'sport' );
-				if ( !array_key_exists( $sport_key, self::$sports ) )
-					exit( 'sport' );
+				$sport_key = Balitsa::request_str( 'get', 'sport', option_list: array_keys( self::$sports ) );
 				$sport = &self::$sports[$sport_key];
-				$stat_key = Balitsa_Request::get( 'str', 'stat' );
-				if ( !array_key_exists( $stat_key, $sport['stats'] ) )
-					exit( 'stat' );
+				$stat_key = Balitsa::request_str( 'get', 'stat', option_list: array_keys( $sport['stats'] ) );
 				unset( $sport['stats'][$stat_key] );
 				self::save();
 				Balitsa::success( self::settings() );
@@ -349,6 +340,6 @@ add_action( 'wp_ajax_' . 'balitsa_sports', function(): void {
 		exit( 'method' );
 	if ( !current_user_can( 'manage_options' ) )
 		exit( 'role' );
-	$task = Balitsa_Request::get( 'str', 'task' );
+	$task = Balitsa::request_str( 'get', 'task' );
 	Balitsa_Sports::ajax( $task );
 } );

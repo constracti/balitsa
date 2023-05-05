@@ -1,3 +1,3 @@
 # Balitsa
 
-Customization plugin of Balitsa website.
+WordPress Plugin: Balitsa customizations.

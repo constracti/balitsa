@@ -186,11 +186,11 @@ final class Balitsa_Access {
 			case 'metabox_refresh':
 				Balitsa::success( $this->metabox() );
 			case 'metabox_accept':
-				$user = Balitsa_Request::post( 'user' );
+				$user = Balitsa::request_user( 'post', 'user' );
 				$this->set( $user, TRUE );
 				Balitsa::success( $this->metabox() );
 			case 'metabox_reject':
-				$user = Balitsa_Request::get( 'user' );
+				$user = Balitsa::request_user( 'get', 'user' );
 				$this->set( $user, FALSE );
 				Balitsa::success( $this->metabox() );
 			default:
@@ -264,10 +264,10 @@ add_action( 'admin_enqueue_scripts', function( string $hook_suffix ): void {
 add_action( 'wp_ajax_' . 'balitsa_access', function(): void {
 	if ( $_SERVER['REQUEST_METHOD'] !== 'POST' )
 		exit( 'method' );
-	$post = Balitsa_Request::get( 'post' );
+	$post = Balitsa::request_post( 'get', 'post' );
 	if ( !current_user_can( 'edit_post', $post->ID ) )
 		exit( 'role' );
-	$task = Balitsa_Request::get( 'str', 'task' );
+	$task = Balitsa::request_str( 'get', 'task' );
 	$access = new Balitsa_Access( $post );
 	$access->ajax( $task );
 } );

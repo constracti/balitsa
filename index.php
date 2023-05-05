@@ -4,7 +4,7 @@
  * Plugin Name: Balitsa
  * Plugin URI: https://github.com/constracti/balitsa
  * Description: Customization plugin of Balitsa website.
- * Version: 1.1
+ * Version: 1.2
  * Requires PHP: 8.0
  * Author: constracti
  * Author URI: https://github.com/constracti
@@ -35,7 +35,7 @@ add_action( 'admin_menu', function(): void {
 	$capability = 'manage_options';
 	$menu_slug = 'balitsa';
 	add_options_page( $page_title, $menu_title, $capability, $menu_slug, function() {
-		$tab_curr = Balitsa_Request::get( 'str', 'tab', TRUE ) ?? 'settings';
+		$tab_curr = Balitsa::request_str( 'get', 'tab', TRUE ) ?? 'settings';
 ?>
 <div class="wrap">
 	<h1><?= esc_html__( 'Balitsa', 'balitsa' ) ?></h1>
@@ -120,7 +120,7 @@ final class Balitsa {
 	}
 
 	public static function nonce_verify( string $action, string ...$args ): void {
-		$nonce = Balitsa_Request::get( 'str', 'nonce' );
+		$nonce = Balitsa::request_str( 'get', 'nonce' );
 		if ( !wp_verify_nonce( $nonce, self::nonce_action( $action, ...$args ) ) )
 			exit( 'nonce' );
 	}
@@ -141,5 +141,135 @@ final class Balitsa {
 			}
 			return 0;
 		};
+	}
+
+	// request
+
+	private const INPUT_MAXLENGTH_TEXT = 255;
+
+	private const INPUT_PATTERN_SLUG = '\w{1,15}';
+
+	public static function request_str(
+		string $method,
+		string $key,
+		bool $nullable = FALSE,
+		?int $maxlength = NULL,
+		?array $option_list = NULL,
+		?string $pattern = NULL,
+	): ?string {
+		$array = match ( $method ) {
+			'get' => $_GET,
+			'post' => $_POST,
+			'cookie' => $_COOKIE,
+			default => exit( 'error' ),
+		};
+		if ( !isset( $array[$key] ) ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		$var = $array[$key];
+		if ( !is_string( $var ) ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		if ( empty( $var ) ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		if ( !is_null( $maxlength ) && mb_strlen( $var ) > $maxlength ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		if ( !is_null( $option_list ) && !in_array( $var, $option_list, TRUE ) ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		if ( !is_null( $pattern ) && !mb_ereg_match( '^' . $pattern . '$', $var ) ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		return $var;
+	}
+
+	public static function request_slug( string $method, string $key, bool $nullable = FALSE ): ?string {
+		return self::request_str( $method, $key, $nullable, pattern: self::INPUT_PATTERN_SLUG );
+	}
+
+	public static function request_text( string $method, string $key, bool $nullable = FALSE ): ?string {
+		$var = self::request_str( $method, $key, $nullable, maxlength: self::INPUT_MAXLENGTH_TEXT );
+		if ( is_null( $var ) )
+			return NULL;
+		$var = mb_ereg_replace( '\s+', ' ', $var );
+		if ( !is_string( $var ) ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		$var = trim( $var );
+		if ( empty( $var ) ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		return $var;
+	}
+
+	public static function request_datetime( string $method, string $key, bool $nullable = FALSE ): ?string {
+		$var = self::request_str( $method, $key, $nullable, maxlength: self::INPUT_MAXLENGTH_TEXT );
+		if ( is_null( $var ) )
+			return NULL;
+		$var = DateTime::createFromFormat( 'Y-m-d\TH:i', $var, wp_timezone() );
+		if ( $var === FALSE ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		return $var->format('Y-m-d H:i:s');
+	}
+
+	public static function request_onoff( string $method, string $key, bool $nullable = FALSE ): ?bool {
+		$var = self::request_str( $method, $key, $nullable, option_list: [ 'on', 'off' ] );
+		if ( is_null( $var ) )
+			return NULL;
+		return $var === 'on';
+	}
+
+	public static function request_int( string $method, string $key, bool $nullable = FALSE ): ?int {
+		$var = self::request_str( $method, $key, $nullable, maxlength: self::INPUT_MAXLENGTH_TEXT );
+		if ( is_null( $var ) )
+			return NULL;
+		return intval( $var );
+	}
+
+	public static function request_post( string $method, string $key, bool $nullable = FALSE ): ?WP_Post {
+		$var = self::request_int( $method, $key, $nullable );
+		if ( is_null( $var ) )
+			return NULL;
+		$var = get_post( $var );
+		if ( is_null( $var ) ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		return $var;
+	}
+
+	public static function request_user( string $method, string $key, bool $nullable = FALSE ): ?WP_User {
+		$var = self::request_int( $method, $key, $nullable );
+		if ( is_null( $var ) )
+			return NULL;
+		$var = get_user_by( 'ID', $var );
+		if ( $var === FALSE ) {
+			if ( $nullable )
+				return NULL;
+			exit( $key );
+		}
+		return $var;
 	}
 }
