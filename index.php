@@ -4,7 +4,7 @@
  * Plugin Name: Balitsa
  * Plugin URI: https://github.com/constracti/balitsa
  * Description: Customization plugin of Balitsa website.
- * Version: 1.2
+ * Version: 1.2.1
  * Requires PHP: 8.0
  * Author: constracti
  * Author URI: https://github.com/constracti
@@ -174,7 +174,7 @@ final class Balitsa {
 				return NULL;
 			exit( $key );
 		}
-		if ( empty( $var ) ) {
+		if ( $var === '' ) {
 			if ( $nullable )
 				return NULL;
 			exit( $key );
@@ -212,7 +212,7 @@ final class Balitsa {
 			exit( $key );
 		}
 		$var = trim( $var );
-		if ( empty( $var ) ) {
+		if ( $var === '' ) {
 			if ( $nullable )
 				return NULL;
 			exit( $key );
